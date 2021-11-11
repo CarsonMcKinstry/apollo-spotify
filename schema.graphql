@@ -1,0 +1,344 @@
+
+"""
+Queries
+"""
+
+type Query {
+    search(
+        query: String!
+        type: [ItemType!]!
+        limit: Int
+        offset: Int
+        market: String
+        includeExternal: Boolean
+    ): SearchResponse
+}
+
+"""
+Main Types
+"""
+type Artist implements Item {
+    id: ID!
+    name: String!
+    type: ItemType!
+
+    popularity: Int!
+
+    genres: [String!]!
+    uri: String!
+
+    followers: Followers!
+    externalUrls: ExternalUrls!
+}
+
+extend type Query {
+    searchArtists(
+        query: String!
+        limit: Int
+        offset: Int
+        market: String
+    ): ArtistResponse!
+    artist(
+        id: ID!
+    ): Artist!
+    artists(
+        ids: [ID!]!
+    ): [Artist!]!
+}
+
+type Album implements Item {
+    id: ID!
+    name: String!
+    type: ItemType!
+    uri: String!
+    albumType: AlbumType!
+
+    releaseDate: String!
+    releaseDatePrecision: DatePrecision!
+
+    artists: [Artist!]!
+    externalUrls: ExternalUrls!
+    availableMarkets: [String!]!
+    restrictions: Restrictions!
+
+    images: [Image!]!
+
+    totalTracks: Int!
+    tracks: TrackResponse!
+}
+
+extend type Query {
+    searchAlbums (
+        query: String!
+        limit: Int
+        offset: Int
+        market: String
+    ): AlbumResponse!
+    album(
+        id: ID!
+    ): Album!
+    albums(
+        ids: [ID!]!
+    ): [Album!]!
+    albumsByArtist(
+        artistId: ID!
+    ): AlbumResponse!
+}
+
+type Track implements Item {
+    id: ID!
+    name: String!
+    type: ItemType!
+    availableMarkets: [String!]!
+
+    album: Album!
+    discNumber: Int!
+    trackNumber: Int!
+    duration: Int!
+    explicit: Boolean!
+
+    restrictions: Restrictions!
+
+    uri: String!
+    previewUrl: String!
+
+    externalIds: ExternalIds!
+    linkedFrom: LinkedFrom!
+    isPlayable: Boolean!
+    isLocal: Boolean!
+}
+
+type LinkedFrom {
+    album: Album!
+    artists: [Artist!]!
+}
+
+extend type Query {
+    searchTracks(
+        query: String!
+        limit: Int
+        offset: Int
+        market: String
+    ): TrackResponse!
+    track(id: ID!): Track!
+    tracks(ids: [ID!]!): [Track!]!
+    tracksByAlbum(albumId: ID!): TrackResponse!
+    topTracksForArtist(artistId: ID!): [Track!]!
+}
+
+type Episode implements Item {
+    id: ID!
+    name: String!
+    uri: String!
+    type: ItemType!
+
+    audioPreviewUrl: String!
+    description: String!
+    htmlDescription: String!
+    duration: Int!
+    explicit: Boolean!
+    externalUrls: ExternalUrls!
+    images: [Image!]!
+    isExternallyHosted: Boolean!
+    isPlayable: Boolean!
+    language: String!
+    languages: [String!]!
+
+    releaseDate: String!
+    releaseDatePrecision: DatePrecision!
+    restrictions: Restrictions!
+    resumePoint: ResumePoint!
+
+    show: Show!
+}
+
+extend type Query {
+    searchEpisodes(
+        query: String!
+        limit: Int
+        offset: Int
+        market: String
+    ): EpisodeResponse!
+    episode(id: ID!): Episode!
+    episodes(ids: [ID!]!): [Episode!]!
+}
+
+type Show implements Item {
+    id: ID!
+    name: String!
+    uri: String!
+    type: ItemType!
+
+    copyrights: [Copyright!]!
+    description: String!
+    htmlDescription: String!
+    explicit: Boolean!
+    externalUrls: ExternalUrls!
+    images: [Image!]!
+    isExternallyHosted: Boolean!
+    languages: [String!]!
+    mediaType: String!
+    publisher: String!
+
+    episodes: EpisodeResponse!
+}
+
+extend type Query {
+    searchShows(
+        query: String!
+        limit: Int
+        offset: Int
+        market: String
+    ): ShowResponse!
+    show(id: ID!): Show!
+    shows(ids: [ID!]!): [Show!]!
+}
+
+"""
+Responses
+"""
+type SearchResponse {
+    tracks: TrackResponse
+    artists: ArtistResponse
+    albums: AlbumResponse
+    shows: ShowResponse
+    episodes: EpisodeResponse
+}
+
+type ArtistResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+
+    artists: [Artist!]!
+}
+
+type TrackResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+
+    tracks: [Track!]!
+}
+
+type AlbumResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+
+    albums: [Album!]!
+}
+
+type ShowResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+
+    shows: [Show!]!
+}
+
+type EpisodeResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+
+    episodes: [Episode!]!
+}
+
+"""
+Support Types
+"""
+
+interface Item {
+    id: ID!
+    name: String!
+    type: ItemType!
+    uri: String!
+}
+
+interface Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int!
+    previous: Int!
+}
+
+type ExternalIds {
+    isrc: String!
+    ean: String!
+    upc: String!
+}
+
+type ExternalUrls {
+    spotify: String!
+}
+
+type Followers {
+    total: Int!
+}
+
+type Image {
+    url: String!
+    height: Int!
+    width: Int!
+}
+
+type Restrictions {
+    reason: RestrictionReason!
+}
+
+type ResumePoint {
+    fullyPlayed: Boolean!
+    timestamp: Int!
+}
+
+type Copyright {
+    text: String!
+    type: CopyrightType!
+}
+
+"""
+Enums
+"""
+
+enum ItemType {
+    track
+    artist
+    album
+    episode
+    show
+}
+
+enum AlbumType {
+    album
+    single
+    compilation
+}
+
+enum DatePrecision {
+    year
+    month
+    day
+}
+
+enum RestrictionReason {
+    market
+    product
+    explicit
+}
+
+enum CopyrightType {
+    copyright
+    performance
+}
