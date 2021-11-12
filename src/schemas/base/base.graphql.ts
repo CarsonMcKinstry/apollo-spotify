@@ -21,9 +21,9 @@ export const baseTypeDefs = gql`
   }
 
   type ExternalIds {
-    isrc: String!
-    ean: String!
-    upc: String!
+    isrc: String
+    ean: String
+    upc: String
   }
 
   type ExternalUrls {

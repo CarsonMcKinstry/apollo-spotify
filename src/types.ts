@@ -5,6 +5,9 @@ import {
   Album,
   AlbumType,
   DatePrecision,
+  Track,
+  ExternalIds,
+  LinkedFrom,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
@@ -15,11 +18,13 @@ export interface SpotifySchemaContext {
 }
 
 export type Resolvers = RawResolvers<SpotifySchemaContext>;
-export interface ArtistAPIResponse extends Omit<Artist, "externalUrls"> {
+
+type ArtistCaseCorrections = "externalUrls";
+export interface ArtistAPIResponse extends Omit<Artist, ArtistCaseCorrections> {
   external_urls: ExternalUrls;
 }
 
-type AlbumOmissions =
+type AlbumCaseCorrections =
   | "externalUrls"
   | "albumType"
   | "availableMarkets"
@@ -27,11 +32,36 @@ type AlbumOmissions =
   | "releaseDatePrecision"
   | "totalTracks";
 
-export interface AlbumAPIResponse extends Omit<Album, AlbumOmissions> {
+export interface AlbumAPIResponse extends Omit<Album, AlbumCaseCorrections> {
   external_urls: ExternalUrls;
   album_type: AlbumType;
   available_markets: string[];
   release_date: string;
   release_date_precision: DatePrecision;
   total_tracks: number;
+}
+
+type TrackCaseCorrections =
+  | "externalUrls"
+  | "availableMarkets"
+  | "duration"
+  | "discNumber"
+  | "trackNumber"
+  | "previewUrl"
+  | "externalIds"
+  | "isPlayable"
+  | "isLocal"
+  | "linkedFrom";
+
+export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
+  external_urls: ExternalUrls;
+  available_markets: string[];
+  duration_ms: number;
+  disc_number: number;
+  track_number: number;
+  preview_url: string;
+  external_ids: ExternalIds;
+  is_playable: boolean;
+  is_local: boolean;
+  linked_from: LinkedFrom;
 }

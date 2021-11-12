@@ -2,7 +2,7 @@ import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
 import request from "request";
 
-import { AlbumAPIResponse, ArtistAPIResponse } from "./types";
+import { AlbumAPIResponse, ArtistAPIResponse, TrackAPIResponse } from "./types";
 
 interface ClientGrant {
   access_token: string;
@@ -138,9 +138,38 @@ export class Spotify extends RESTDataSource {
   }
 
   getAlbums(ids: string[], market?: string) {
-    return this.get<AlbumAPIResponse[]>("/albums", {
+    const query: Record<string, Object> = {
       ids,
-      market,
-    });
+    };
+
+    if (market) {
+      query.market = market;
+    }
+    return this.get<{ albums: AlbumAPIResponse[] }>("/albums", query);
+  }
+
+  /**
+   * Track Queries
+   */
+  getTrack(id: string, market?: string) {
+    const query: Record<string, Object> = {};
+
+    if (market) {
+      query.market = market;
+    }
+
+    return this.get<TrackAPIResponse>(`/tracks/${id}`, query);
+  }
+
+  getTracks(ids: string[], market?: string) {
+    const query: Record<string, Object> = {
+      ids,
+    };
+
+    if (market) {
+      query.market = market;
+    }
+
+    return this.get<{ tracks: TrackAPIResponse[] }>("/tracks", query);
   }
 }
