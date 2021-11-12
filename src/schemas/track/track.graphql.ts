@@ -7,6 +7,8 @@ export const trackTypeDefs = gql`
     type: ItemType!
     availableMarkets: [String!]!
 
+    artists: [Artist!]!
+
     album: Album!
     discNumber: Int!
     trackNumber: Int!
@@ -36,8 +38,8 @@ export const trackTypeDefs = gql`
     #     offset: Int
     #     market: String
     # ): TrackResponse!
-    track(id: ID!): Track!
-    tracks(ids: [ID!]!): [Track!]!
+    track(id: ID!, market: String): Track!
+    tracks(ids: [ID!]!, market: String): [Track!]!
     # tracksByAlbum(albumId: ID!): TrackResponse!
     # topTracksForArtist(artistId: ID!): [Track!]!
   }

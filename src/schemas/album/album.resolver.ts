@@ -6,13 +6,16 @@ const albumReCaseResolver = reCaseResolver((dataSource) => dataSource.getAlbum);
 
 export const albumResolvers: Resolvers = {
   Query: {
-    async album(_, { id }, { dataSources }) {
-      const album = await dataSources.spotify.getAlbum(id);
+    async album(_, { id, market }, { dataSources }) {
+      const album = await dataSources.spotify.getAlbum(id, market ?? undefined);
 
       return responseMapper(album);
     },
-    async albums(_, { ids }, { dataSources }) {
-      const { albums } = await dataSources.spotify.getAlbums(ids);
+    async albums(_, { ids, market }, { dataSources }) {
+      const { albums } = await dataSources.spotify.getAlbums(
+        ids,
+        market ?? undefined
+      );
 
       return albums.map((album) => responseMapper(album));
     },
