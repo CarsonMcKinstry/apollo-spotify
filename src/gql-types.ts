@@ -14,6 +14,29 @@ export type Scalars = {
   Float: number;
 };
 
+export type Album = Item & {
+  __typename?: 'Album';
+  albumType: AlbumType;
+  artists: Array<Artist>;
+  availableMarkets: Array<Scalars['String']>;
+  externalUrls: ExternalUrls;
+  id: Scalars['ID'];
+  images: Array<Image>;
+  name: Scalars['String'];
+  releaseDate: Scalars['String'];
+  releaseDatePrecision: DatePrecision;
+  restrictions: Restrictions;
+  totalTracks: Scalars['Int'];
+  type: ItemType;
+  uri: Scalars['String'];
+};
+
+export enum AlbumType {
+  Album = 'album',
+  Compilation = 'compilation',
+  Single = 'single'
+}
+
 export type Artist = Item & {
   __typename?: 'Artist';
   externalUrls: ExternalUrls;
@@ -26,6 +49,17 @@ export type Artist = Item & {
   type: ItemType;
   uri: Scalars['String'];
 };
+
+export type Copyright = {
+  __typename?: 'Copyright';
+  text: Scalars['String'];
+  type: CopyrightType;
+};
+
+export enum CopyrightType {
+  Copyright = 'copyright',
+  Performance = 'performance'
+}
 
 export enum DatePrecision {
   Day = 'day',
@@ -82,10 +116,21 @@ export type Pagination = {
 
 export type Query = {
   __typename?: 'Query';
+  album: Album;
+  albums: Array<Album>;
   artist?: Maybe<Artist>;
   artists: Array<Artist>;
-  foo?: Maybe<Scalars['Boolean']>;
   health: Scalars['Boolean'];
+};
+
+
+export type QueryAlbumArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAlbumsArgs = {
+  ids: Array<Scalars['ID']>;
 };
 
 
@@ -103,6 +148,17 @@ export enum RestrictionReason {
   Market = 'market',
   Product = 'product'
 }
+
+export type Restrictions = {
+  __typename?: 'Restrictions';
+  reason: RestrictionReason;
+};
+
+export type ResumePoint = {
+  __typename?: 'ResumePoint';
+  fullyPlayed: Scalars['Boolean'];
+  timestamp: Scalars['Int'];
+};
 
 
 
@@ -173,8 +229,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Album: ResolverTypeWrapper<Album>;
+  AlbumType: AlbumType;
   Artist: ResolverTypeWrapper<Artist>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Copyright: ResolverTypeWrapper<Copyright>;
+  CopyrightType: CopyrightType;
   DatePrecision: DatePrecision;
   ExternalIds: ResolverTypeWrapper<ExternalIds>;
   ExternalUrls: ResolverTypeWrapper<ExternalUrls>;
@@ -182,28 +242,51 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Image: ResolverTypeWrapper<Image>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  Item: ResolversTypes['Artist'];
+  Item: ResolversTypes['Album'] | ResolversTypes['Artist'];
   ItemType: ItemType;
   Pagination: never;
   Query: ResolverTypeWrapper<{}>;
   RestrictionReason: RestrictionReason;
+  Restrictions: ResolverTypeWrapper<Restrictions>;
+  ResumePoint: ResolverTypeWrapper<ResumePoint>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Album: Album;
   Artist: Artist;
   Boolean: Scalars['Boolean'];
+  Copyright: Copyright;
   ExternalIds: ExternalIds;
   ExternalUrls: ExternalUrls;
   Followers: Followers;
   ID: Scalars['ID'];
   Image: Image;
   Int: Scalars['Int'];
-  Item: ResolversParentTypes['Artist'];
+  Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'];
   Pagination: never;
   Query: {};
+  Restrictions: Restrictions;
+  ResumePoint: ResumePoint;
   String: Scalars['String'];
+};
+
+export type AlbumResolvers<ContextType = any, ParentType extends ResolversParentTypes['Album'] = ResolversParentTypes['Album']> = {
+  albumType?: Resolver<ResolversTypes['AlbumType'], ParentType, ContextType>;
+  artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType>;
+  availableMarkets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  releaseDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  releaseDatePrecision?: Resolver<ResolversTypes['DatePrecision'], ParentType, ContextType>;
+  restrictions?: Resolver<ResolversTypes['Restrictions'], ParentType, ContextType>;
+  totalTracks?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ArtistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Artist'] = ResolversParentTypes['Artist']> = {
@@ -216,6 +299,12 @@ export type ArtistResolvers<ContextType = any, ParentType extends ResolversParen
   popularity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CopyrightResolvers<ContextType = any, ParentType extends ResolversParentTypes['Copyright'] = ResolversParentTypes['Copyright']> = {
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['CopyrightType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -244,7 +333,7 @@ export type ImageResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type ItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = {
-  __resolveType: TypeResolveFn<'Artist', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Album' | 'Artist', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
@@ -261,14 +350,28 @@ export type PaginationResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  album?: Resolver<ResolversTypes['Album'], ParentType, ContextType, RequireFields<QueryAlbumArgs, 'id'>>;
+  albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumsArgs, 'ids'>>;
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistArgs, 'id'>>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
-  foo?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   health?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 };
 
+export type RestrictionsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Restrictions'] = ResolversParentTypes['Restrictions']> = {
+  reason?: Resolver<ResolversTypes['RestrictionReason'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ResumePointResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResumePoint'] = ResolversParentTypes['ResumePoint']> = {
+  fullyPlayed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
+  Album?: AlbumResolvers<ContextType>;
   Artist?: ArtistResolvers<ContextType>;
+  Copyright?: CopyrightResolvers<ContextType>;
   ExternalIds?: ExternalIdsResolvers<ContextType>;
   ExternalUrls?: ExternalUrlsResolvers<ContextType>;
   Followers?: FollowersResolvers<ContextType>;
@@ -276,5 +379,7 @@ export type Resolvers<ContextType = any> = {
   Item?: ItemResolvers<ContextType>;
   Pagination?: PaginationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Restrictions?: RestrictionsResolvers<ContextType>;
+  ResumePoint?: ResumePointResolvers<ContextType>;
 };
 

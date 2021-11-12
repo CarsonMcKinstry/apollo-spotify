@@ -1,7 +1,8 @@
-import { DataSource } from "apollo-datasource";
-import { RequestOptions } from "apollo-datasource-rest";
+import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
 import request from "request";
+
+import { AlbumAPIResponse, ArtistAPIResponse } from "./types";
 
 interface ClientGrant {
   access_token: string;
@@ -22,9 +23,11 @@ const isAuthFailure = (obj: any): obj is AuthFailure => {
   return "error" in obj && "error_description" in obj;
 };
 
-export class ClientAuth extends DataSource {
-  private accessToken: string | null = null;
-  private accessTokenExpiry: number = Date.now();
+let accessToken: string | null = null;
+let accessTokenExpiry: number = Date.now();
+
+export class Spotify extends RESTDataSource {
+  override baseURL = "https://api.spotify.com/v1";
 
   constructor(
     private clientId: string = (process.env.SPOTIFY_CLIENT_ID = ""),
@@ -41,25 +44,19 @@ export class ClientAuth extends DataSource {
   }
 
   private get accessTokenExpired() {
-    return Date.now() > this.accessTokenExpiry;
+    return Date.now() > accessTokenExpiry;
   }
 
-  public isAuthorized() {
-    return this.accessToken && this.accessTokenExpired;
+  private isAuthorized() {
+    return accessToken && this.accessTokenExpired;
   }
 
-  public async attachAccessToken(req: RequestOptions) {
-    if (!this.isAuthorized()) {
+  override async initialize(config: any) {
+    if (this.accessTokenExpired || !accessToken) {
       await this.authorize();
     }
 
-    req.headers.set("Authorization", `Bearer ${this.accessToken}`);
-  }
-
-  override async initialize() {
-    if (this.accessTokenExpired || !this.accessToken) {
-      await this.authorize();
-    }
+    super.initialize(config);
   }
 
   public async authorize() {
@@ -80,7 +77,7 @@ export class ClientAuth extends DataSource {
 
     const { access_token, expires_in } = await new Promise<ClientGrant>(
       (resolve, reject) => {
-        request.post(authOptions, (err, res, body) => {
+        request.post(authOptions, (err, _, body) => {
           if (err) {
             return reject(err);
           }
@@ -102,7 +99,48 @@ export class ClientAuth extends DataSource {
       }
     );
 
-    this.accessToken = access_token;
-    this.accessTokenExpiry = Date.now() + expires_in * 1000;
+    accessToken = access_token;
+    accessTokenExpiry = Date.now() + expires_in * 1000;
+  }
+
+  override async willSendRequest(req: RequestOptions) {
+    if (!this.isAuthorized) {
+      await this.authorize();
+    }
+
+    req.headers.set("Authorization", `Bearer ${accessToken}`);
+  }
+
+  /**
+   * Artist Queries
+   */
+  getArtist(id: string) {
+    return this.get<ArtistAPIResponse>(`/artists/${id}`);
+  }
+
+  getArtists(ids: string[]) {
+    return this.get<{ artists: ArtistAPIResponse[] }>(`/artists`, {
+      ids,
+    });
+  }
+
+  /**
+   * Album Queries
+   */
+  getAlbum(id: string, market?: string) {
+    const query: Record<string, Object> = {};
+
+    if (market) {
+      query.market = market;
+    }
+
+    return this.get<AlbumAPIResponse>(`/albums/${id}`, query);
+  }
+
+  getAlbums(ids: string[], market?: string) {
+    return this.get<AlbumAPIResponse[]>("/albums", {
+      ids,
+      market,
+    });
   }
 }

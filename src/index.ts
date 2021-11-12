@@ -6,12 +6,13 @@ import { SpotifySchemaContext } from "./types";
 
 import { baseResolvers, baseTypeDefs } from "./schemas/base";
 import { artistResolvers, artistTypeDefs } from "./schemas/artist";
+import { albumTypeDefs, albumResolvers } from "./schemas/album";
 
 config();
 
 export const schema = makeExecutableSchema<SpotifySchemaContext>({
-  typeDefs: [baseTypeDefs, artistTypeDefs],
-  resolvers: merge(baseResolvers, artistResolvers),
+  typeDefs: [baseTypeDefs, artistTypeDefs, albumTypeDefs],
+  resolvers: merge(baseResolvers, artistResolvers, albumResolvers),
 });
 
-export { dataSources } from "./datasources";
+export { Spotify } from "./SpotifyDataSource";

@@ -5,14 +5,11 @@ export const baseTypeDefs = gql`
     health: Boolean!
   }
 
-  type ExternalIds {
-    isrc: String!
-    ean: String!
-    upc: String!
-  }
-
-  type ExternalUrls {
-    spotify: String!
+  interface Item {
+    id: ID!
+    name: String!
+    type: ItemType!
+    uri: String!
   }
 
   interface Pagination {
@@ -23,11 +20,38 @@ export const baseTypeDefs = gql`
     previous: Int!
   }
 
-  interface Item {
-    id: ID!
-    name: String!
-    type: ItemType!
-    uri: String!
+  type ExternalIds {
+    isrc: String!
+    ean: String!
+    upc: String!
+  }
+
+  type ExternalUrls {
+    spotify: String!
+  }
+
+  type Followers {
+    total: Int!
+  }
+
+  type Image {
+    url: String!
+    height: Int!
+    width: Int!
+  }
+
+  type Restrictions {
+    reason: RestrictionReason!
+  }
+
+  type ResumePoint {
+    fullyPlayed: Boolean!
+    timestamp: Int!
+  }
+
+  type Copyright {
+    text: String!
+    type: CopyrightType!
   }
 
   enum ItemType {
@@ -36,6 +60,12 @@ export const baseTypeDefs = gql`
     album
     episode
     show
+  }
+
+  enum AlbumType {
+    album
+    single
+    compilation
   }
 
   enum DatePrecision {
@@ -50,9 +80,8 @@ export const baseTypeDefs = gql`
     explicit
   }
 
-  type Image {
-    url: String!
-    height: Int!
-    width: Int!
+  enum CopyrightType {
+    copyright
+    performance
   }
 `;
