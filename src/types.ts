@@ -1,4 +1,5 @@
 import {
+  Resolver,
   Resolvers as RawResolvers,
   Artist,
   ExternalUrls,
@@ -19,9 +20,12 @@ export interface SpotifySchemaContext {
 
 export type Resolvers = RawResolvers<SpotifySchemaContext>;
 
+export type ReCaseResolver = Resolver<any, any, SpotifySchemaContext>;
+
 type ArtistCaseCorrections = "externalUrls";
 export interface ArtistAPIResponse extends Omit<Artist, ArtistCaseCorrections> {
   external_urls: ExternalUrls;
+  [key: string]: any;
 }
 
 type AlbumCaseCorrections =
@@ -39,6 +43,7 @@ export interface AlbumAPIResponse extends Omit<Album, AlbumCaseCorrections> {
   release_date: string;
   release_date_precision: DatePrecision;
   total_tracks: number;
+  [key: string]: any;
 }
 
 type TrackCaseCorrections =
@@ -64,4 +69,5 @@ export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   is_playable: boolean;
   is_local: boolean;
   linked_from: LinkedFrom;
+  [key: string]: any;
 }
