@@ -1,5 +1,4 @@
 import { Resolvers } from "../../types";
-import { responseMapper } from "../../responseMapper";
 
 export const trackResolvers: Resolvers = {
   Query: {

@@ -2,9 +2,7 @@ import { fieldResolver } from "../../fieldResolver";
 import { Artist } from "../../gql-types";
 import { Resolvers } from "../../types";
 
-const artistFieldResolver = fieldResolver<Artist>(
-  (spotify) => spotify.getArtist
-);
+const artistFieldResolver = fieldResolver<Artist>("getArtist");
 
 export const artistResolvers: Resolvers = {
   Query: {

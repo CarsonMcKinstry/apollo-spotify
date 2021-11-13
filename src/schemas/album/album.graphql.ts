@@ -18,7 +18,7 @@ export const albumTypeDefs = gql`
 
     artists: [Artist!]!
     externalUrls: ExternalUrls!
-    availableMarkets: [String!]!
+    availableMarkets: [String!]
     restrictions: Restrictions
 
     images: [Image!]!

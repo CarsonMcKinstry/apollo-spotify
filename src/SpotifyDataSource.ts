@@ -174,7 +174,15 @@ export class Spotify extends RESTDataSource {
       query.market = market;
     }
 
-    const track = await this.get<TrackAPIResponse>(`/tracks/${id}`, query);
+    const { duration_ms, ...restTrack } = await this.get<TrackAPIResponse>(
+      `/tracks/${id}`,
+      query
+    );
+
+    const track = {
+      duration: duration_ms,
+      ...restTrack,
+    };
 
     return responseMapper(track);
   }
@@ -193,6 +201,13 @@ export class Spotify extends RESTDataSource {
       query
     );
 
-    return tracks.map((track) => responseMapper(track));
+    return tracks.map(({ duration_ms, ...restTrack }) => {
+      const track = {
+        duration: duration_ms,
+        ...restTrack,
+      };
+
+      return responseMapper(track);
+    });
   }
 }

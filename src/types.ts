@@ -20,7 +20,7 @@ export interface SpotifySchemaContext {
 
 export type Resolvers = RawResolvers<SpotifySchemaContext>;
 
-export type Resolver<TParent> = RawResolver<TParent, any, SpotifySchemaContext>;
+export type Resolver<TParent> = RawResolver<any, TParent, SpotifySchemaContext>;
 
 type ArtistCaseCorrections = "externalUrls";
 export interface ArtistAPIResponse extends Omit<Artist, ArtistCaseCorrections> {
@@ -39,7 +39,7 @@ type AlbumCaseCorrections =
 export interface AlbumAPIResponse extends Omit<Album, AlbumCaseCorrections> {
   external_urls: ExternalUrls;
   album_type: AlbumType;
-  available_markets: string[];
+  available_markets?: string[];
   release_date: string;
   release_date_precision: DatePrecision;
   total_tracks: number;
@@ -60,7 +60,7 @@ type TrackCaseCorrections =
 
 export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   external_urls: ExternalUrls;
-  available_markets: string[];
+  available_markets?: string[];
   duration_ms: number;
   disc_number: number;
   track_number: number;

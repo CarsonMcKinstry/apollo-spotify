@@ -3,9 +3,9 @@ import { fieldResolver } from "../../fieldResolver";
 
 import { Album } from "../../gql-types";
 
-const albumFieldResolver = fieldResolver<Album>(
-  (dataSource) => dataSource.getAlbum
-);
+const albumFieldResolver = fieldResolver<Album>("getAlbum");
+
+const f = albumFieldResolver("availableMarkets");
 
 export const albumResolvers: Resolvers = {
   Query: {

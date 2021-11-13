@@ -5,7 +5,7 @@ export const trackTypeDefs = gql`
     id: ID!
     name: String!
     type: ItemType!
-    availableMarkets: [String!]!
+    availableMarkets: [String!]
 
     artists: [Artist!]!
 
