@@ -1,25 +1,25 @@
-import { reCaseResolver } from "../../reCaseResolver";
+import { fieldResolver } from "../../fieldResolver";
+import { Artist } from "../../gql-types";
 import { Resolvers } from "../../types";
-import { responseMapper } from "../../responseMapper";
 
-const artistReCaseResolver = reCaseResolver((spotify) => spotify.getArtist);
+const artistFieldResolver = fieldResolver<Artist>(
+  (spotify) => spotify.getArtist
+);
 
 export const artistResolvers: Resolvers = {
   Query: {
-    async artist(_, { id }, { dataSources }) {
-      const artist = await dataSources.spotify.getArtist(id);
-      return responseMapper(artist);
+    artist(_, { id }, { dataSources }) {
+      return dataSources.spotify.getArtist(id);
     },
-    async artists(_, { ids }, { dataSources }) {
-      const { artists } = await dataSources.spotify.getArtists(ids);
-      return artists.map((artist) => responseMapper(artist));
+    artists(_, { ids }, { dataSources }) {
+      return dataSources.spotify.getArtists(ids);
     },
   },
   Artist: {
-    popularity: artistReCaseResolver("popularity"),
-    genres: artistReCaseResolver("genres"),
-    followers: artistReCaseResolver("followers"),
-    externalUrls: artistReCaseResolver("externalUrls"),
-    images: artistReCaseResolver("images"),
+    popularity: artistFieldResolver("popularity"),
+    genres: artistFieldResolver("genres"),
+    followers: artistFieldResolver("followers"),
+    externalUrls: artistFieldResolver("externalUrls"),
+    images: artistFieldResolver("images"),
   },
 };

@@ -1,31 +1,27 @@
-import { reCaseResolver } from "../../reCaseResolver";
 import { Resolvers } from "../../types";
-import { responseMapper } from "../../responseMapper";
+import { fieldResolver } from "../../fieldResolver";
 
-const albumReCaseResolver = reCaseResolver((dataSource) => dataSource.getAlbum);
+import { Album } from "../../gql-types";
+
+const albumFieldResolver = fieldResolver<Album>(
+  (dataSource) => dataSource.getAlbum
+);
 
 export const albumResolvers: Resolvers = {
   Query: {
-    async album(_, { id, market }, { dataSources }) {
-      const album = await dataSources.spotify.getAlbum(id, market ?? undefined);
-
-      return responseMapper(album);
+    album(_, { id, market }, { dataSources }) {
+      return dataSources.spotify.getAlbum(id, market ?? undefined);
     },
-    async albums(_, { ids, market }, { dataSources }) {
-      const { albums } = await dataSources.spotify.getAlbums(
-        ids,
-        market ?? undefined
-      );
-
-      return albums.map((album) => responseMapper(album));
+    albums(_, { ids, market }, { dataSources }) {
+      return dataSources.spotify.getAlbums(ids, market ?? undefined);
     },
   },
   Album: {
-    albumType: albumReCaseResolver("albumType"),
-    releaseDate: albumReCaseResolver("releaseDate"),
-    releaseDatePrecision: albumReCaseResolver("releaseDatePrecision"),
-    externalUrls: albumReCaseResolver("externalUrls"),
-    availableMarkets: albumReCaseResolver("availableMarkets"),
-    totalTracks: albumReCaseResolver("totalTracks"),
+    albumType: albumFieldResolver("albumType"),
+    releaseDate: albumFieldResolver("releaseDate"),
+    releaseDatePrecision: albumFieldResolver("releaseDatePrecision"),
+    externalUrls: albumFieldResolver("externalUrls"),
+    availableMarkets: albumFieldResolver("availableMarkets"),
+    totalTracks: albumFieldResolver("totalTracks"),
   },
 };

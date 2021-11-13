@@ -1,6 +1,8 @@
 import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
 import request from "request";
+import { Album, Artist, Track } from "./gql-types";
+import { responseMapper } from "./responseMapper";
 
 import { AlbumAPIResponse, ArtistAPIResponse, TrackAPIResponse } from "./types";
 
@@ -114,30 +116,39 @@ export class Spotify extends RESTDataSource {
   /**
    * Artist Queries
    */
-  getArtist(id: string) {
-    return this.get<ArtistAPIResponse>(`/artists/${id}`);
+  async getArtist(id: string): Promise<Artist> {
+    const artistResponse = await this.get<ArtistAPIResponse>(`/artists/${id}`);
+
+    return responseMapper(artistResponse);
   }
 
-  getArtists(ids: string[]) {
-    return this.get<{ artists: ArtistAPIResponse[] }>(`/artists`, {
-      ids,
-    });
+  async getArtists(ids: string[]): Promise<Artist[]> {
+    const { artists } = await this.get<{ artists: ArtistAPIResponse[] }>(
+      `/artists`,
+      {
+        ids,
+      }
+    );
+
+    return artists.map((artist) => responseMapper(artist));
   }
 
   /**
    * Album Queries
    */
-  getAlbum(id: string, market?: string) {
+  async getAlbum(id: string, market?: string): Promise<Album> {
     const query: Record<string, Object> = {};
 
     if (market) {
       query.market = market;
     }
 
-    return this.get<AlbumAPIResponse>(`/albums/${id}`, query);
+    const album = await this.get<AlbumAPIResponse>(`/albums/${id}`, query);
+
+    return responseMapper(album);
   }
 
-  getAlbums(ids: string[], market?: string) {
+  async getAlbums(ids: string[], market?: string): Promise<Album[]> {
     const query: Record<string, Object> = {
       ids,
     };
@@ -145,23 +156,30 @@ export class Spotify extends RESTDataSource {
     if (market) {
       query.market = market;
     }
-    return this.get<{ albums: AlbumAPIResponse[] }>("/albums", query);
+    const { albums } = await this.get<{ albums: AlbumAPIResponse[] }>(
+      "/albums",
+      query
+    );
+
+    return albums.map((album) => responseMapper(album));
   }
 
   /**
    * Track Queries
    */
-  getTrack(id: string, market?: string) {
+  async getTrack(id: string, market?: string): Promise<Track> {
     const query: Record<string, Object> = {};
 
     if (market) {
       query.market = market;
     }
 
-    return this.get<TrackAPIResponse>(`/tracks/${id}`, query);
+    const track = await this.get<TrackAPIResponse>(`/tracks/${id}`, query);
+
+    return responseMapper(track);
   }
 
-  getTracks(ids: string[], market?: string) {
+  async getTracks(ids: string[], market?: string): Promise<Track[]> {
     const query: Record<string, Object> = {
       ids,
     };
@@ -170,6 +188,11 @@ export class Spotify extends RESTDataSource {
       query.market = market;
     }
 
-    return this.get<{ tracks: TrackAPIResponse[] }>("/tracks", query);
+    const { tracks } = await this.get<{ tracks: TrackAPIResponse[] }>(
+      "/tracks",
+      query
+    );
+
+    return tracks.map((track) => responseMapper(track));
   }
 }

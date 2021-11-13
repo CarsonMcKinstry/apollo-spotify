@@ -1,5 +1,5 @@
 import {
-  Resolver,
+  Resolver as RawResolver,
   Resolvers as RawResolvers,
   Artist,
   ExternalUrls,
@@ -20,7 +20,7 @@ export interface SpotifySchemaContext {
 
 export type Resolvers = RawResolvers<SpotifySchemaContext>;
 
-export type ReCaseResolver = Resolver<any, any, SpotifySchemaContext>;
+export type Resolver<TParent> = RawResolver<TParent, any, SpotifySchemaContext>;
 
 type ArtistCaseCorrections = "externalUrls";
 export interface ArtistAPIResponse extends Omit<Artist, ArtistCaseCorrections> {

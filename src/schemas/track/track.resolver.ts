@@ -3,18 +3,11 @@ import { responseMapper } from "../../responseMapper";
 
 export const trackResolvers: Resolvers = {
   Query: {
-    async track(_, { id, market }, { dataSources }) {
-      const track = await dataSources.spotify.getTrack(id, market ?? undefined);
-      console.log(track);
-      return responseMapper(track);
+    track(_, { id, market }, { dataSources }) {
+      return dataSources.spotify.getTrack(id, market ?? undefined);
     },
-    async tracks(_, { ids, market }, { dataSources }) {
-      const { tracks } = await dataSources.spotify.getTracks(
-        ids,
-        market ?? undefined
-      );
-
-      return tracks.map((track) => responseMapper(track));
+    tracks(_, { ids, market }, { dataSources }) {
+      return dataSources.spotify.getTracks(ids, market ?? undefined);
     },
   },
 };
