@@ -54,6 +54,15 @@ export const baseTypeDefs = gql`
     type: CopyrightType!
   }
 
+  type Followers {
+    total: Int!
+  }
+
+  type LinkedFrom {
+    album: Album!
+    artists: [Artist!]!
+  }
+
   enum ItemType {
     track
     artist

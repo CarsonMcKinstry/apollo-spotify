@@ -1,3 +1,4 @@
+import { DataSource } from "apollo-datasource";
 import {
   Resolver as RawResolver,
   Resolvers as RawResolvers,
@@ -9,12 +10,17 @@ import {
   Track,
   ExternalIds,
   LinkedFrom,
+  Episode,
+  ResumePoint,
+  Show,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
 export interface SpotifySchemaContext {
+  [key: string]: any;
   dataSources: {
     spotify: Spotify;
+    [key: string]: DataSource<any>;
   };
 }
 
@@ -70,4 +76,43 @@ export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   is_local: boolean;
   linked_from: LinkedFrom;
   [key: string]: any;
+}
+
+type EpisodeCaseCorrections =
+  | "externalUrls"
+  | "audioPreviewUrl"
+  | "htmlDescription"
+  | "isExternallyPlayable"
+  | "isPlayable"
+  | "releaseDate"
+  | "releaseDatePrecision"
+  | "resumePoint"
+  | "duration";
+
+export interface EpisodeAPIResponse
+  extends Omit<Episode, EpisodeCaseCorrections> {
+  external_urls: ExternalUrls;
+  audio_preview_url: string;
+  html_description: string;
+  is_externally_hosted: boolean;
+  is_playable: boolean;
+  release_date: string;
+  release_date_precision: DatePrecision;
+  resume_point: ResumePoint;
+  duration_ms: number;
+}
+
+type ShowCaseCorrections =
+  | "htmlDescription"
+  | "externalUrls"
+  | "isExternallyHosted"
+  | "mediaType"
+  | "availableMarkets";
+
+export interface ShowAPIResponse extends Omit<Show, ShowCaseCorrections> {
+  external_urls: ExternalUrls;
+  is_externally_hosted: boolean;
+  html_description: string;
+  media_type: number;
+  available_markets?: string[];
 }

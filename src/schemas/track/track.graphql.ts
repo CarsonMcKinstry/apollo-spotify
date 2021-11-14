@@ -26,11 +26,6 @@ export const trackTypeDefs = gql`
     isLocal: Boolean!
   }
 
-  type LinkedFrom {
-    album: Album!
-    artists: [Artist!]!
-  }
-
   extend type Query {
     # searchTracks(
     #     query: String!

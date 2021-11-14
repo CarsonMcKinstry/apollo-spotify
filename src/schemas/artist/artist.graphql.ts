@@ -20,8 +20,4 @@ export const artistTypeDefs = gql`
     externalUrls: ExternalUrls!
     images: [Image!]!
   }
-
-  type Followers {
-    total: Int!
-  }
 `;

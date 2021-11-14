@@ -67,6 +67,30 @@ export enum DatePrecision {
   Year = 'year'
 }
 
+export type Episode = Item & {
+  __typename?: 'Episode';
+  audioPreviewUrl: Scalars['String'];
+  description: Scalars['String'];
+  duration: Scalars['Int'];
+  explicit: Scalars['Boolean'];
+  externalUrls: ExternalUrls;
+  htmlDescription: Scalars['String'];
+  id: Scalars['ID'];
+  images: Array<Image>;
+  isExternallyHosted: Scalars['Boolean'];
+  isPlayable: Scalars['Boolean'];
+  language: Scalars['String'];
+  languages: Array<Scalars['String']>;
+  name: Scalars['String'];
+  releaseDate: Scalars['String'];
+  releaseDatePrecision: DatePrecision;
+  restrictions?: Maybe<Restrictions>;
+  resumePoint: ResumePoint;
+  show: Show;
+  type: ItemType;
+  uri: Scalars['String'];
+};
+
 export type ExternalIds = {
   __typename?: 'ExternalIds';
   ean?: Maybe<Scalars['String']>;
@@ -126,7 +150,11 @@ export type Query = {
   albums: Array<Album>;
   artist?: Maybe<Artist>;
   artists: Array<Artist>;
+  episode: Episode;
+  episodes: Array<Episode>;
   health: Scalars['Boolean'];
+  show: Show;
+  shows: Array<Show>;
   track: Track;
   tracks: Array<Track>;
 };
@@ -151,6 +179,30 @@ export type QueryArtistArgs = {
 
 export type QueryArtistsArgs = {
   ids: Array<Scalars['ID']>;
+};
+
+
+export type QueryEpisodeArgs = {
+  id: Scalars['ID'];
+  market?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryEpisodesArgs = {
+  ids: Array<Scalars['ID']>;
+  market?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryShowArgs = {
+  id: Scalars['ID'];
+  market?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryShowsArgs = {
+  ids: Array<Scalars['ID']>;
+  market?: Maybe<Scalars['String']>;
 };
 
 
@@ -182,6 +234,25 @@ export type ResumePoint = {
   timestamp: Scalars['Int'];
 };
 
+export type Show = Item & {
+  __typename?: 'Show';
+  availableMarkets?: Maybe<Array<Scalars['String']>>;
+  copyrights: Array<Copyright>;
+  description: Scalars['String'];
+  explicit: Scalars['Boolean'];
+  externalUrls: ExternalUrls;
+  htmlDescription: Scalars['String'];
+  id: Scalars['ID'];
+  images: Array<Image>;
+  isExternallyHosted: Scalars['Boolean'];
+  languages: Array<Scalars['String']>;
+  mediaType: Scalars['String'];
+  name: Scalars['String'];
+  publisher: Scalars['String'];
+  type: ItemType;
+  uri: Scalars['String'];
+};
+
 export type Track = Item & {
   __typename?: 'Track';
   album: Album;
@@ -189,7 +260,6 @@ export type Track = Item & {
   availableMarkets?: Maybe<Array<Scalars['String']>>;
   discNumber: Scalars['Int'];
   duration: Scalars['Int'];
-  durationMs: Scalars['Int'];
   explicit: Scalars['Boolean'];
   externalIds: ExternalIds;
   id: Scalars['ID'];
@@ -280,13 +350,14 @@ export type ResolversTypes = {
   Copyright: ResolverTypeWrapper<Copyright>;
   CopyrightType: CopyrightType;
   DatePrecision: DatePrecision;
+  Episode: ResolverTypeWrapper<Episode>;
   ExternalIds: ResolverTypeWrapper<ExternalIds>;
   ExternalUrls: ResolverTypeWrapper<ExternalUrls>;
   Followers: ResolverTypeWrapper<Followers>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Image: ResolverTypeWrapper<Image>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  Item: ResolversTypes['Album'] | ResolversTypes['Artist'] | ResolversTypes['Track'];
+  Item: ResolversTypes['Album'] | ResolversTypes['Artist'] | ResolversTypes['Episode'] | ResolversTypes['Show'] | ResolversTypes['Track'];
   ItemType: ItemType;
   LinkedFrom: ResolverTypeWrapper<LinkedFrom>;
   Pagination: never;
@@ -294,6 +365,7 @@ export type ResolversTypes = {
   RestrictionReason: RestrictionReason;
   Restrictions: ResolverTypeWrapper<Restrictions>;
   ResumePoint: ResolverTypeWrapper<ResumePoint>;
+  Show: ResolverTypeWrapper<Show>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Track: ResolverTypeWrapper<Track>;
 };
@@ -304,18 +376,20 @@ export type ResolversParentTypes = {
   Artist: Artist;
   Boolean: Scalars['Boolean'];
   Copyright: Copyright;
+  Episode: Episode;
   ExternalIds: ExternalIds;
   ExternalUrls: ExternalUrls;
   Followers: Followers;
   ID: Scalars['ID'];
   Image: Image;
   Int: Scalars['Int'];
-  Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'] | ResolversParentTypes['Track'];
+  Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'] | ResolversParentTypes['Episode'] | ResolversParentTypes['Show'] | ResolversParentTypes['Track'];
   LinkedFrom: LinkedFrom;
   Pagination: never;
   Query: {};
   Restrictions: Restrictions;
   ResumePoint: ResumePoint;
+  Show: Show;
   String: Scalars['String'];
   Track: Track;
 };
@@ -356,6 +430,30 @@ export type CopyrightResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type EpisodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Episode'] = ResolversParentTypes['Episode']> = {
+  audioPreviewUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  explicit?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  htmlDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  isExternallyHosted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isPlayable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  language?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  languages?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  releaseDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  releaseDatePrecision?: Resolver<ResolversTypes['DatePrecision'], ParentType, ContextType>;
+  restrictions?: Resolver<Maybe<ResolversTypes['Restrictions']>, ParentType, ContextType>;
+  resumePoint?: Resolver<ResolversTypes['ResumePoint'], ParentType, ContextType>;
+  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ExternalIdsResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExternalIds'] = ResolversParentTypes['ExternalIds']> = {
   ean?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   isrc?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -381,7 +479,7 @@ export type ImageResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type ItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['Item'] = ResolversParentTypes['Item']> = {
-  __resolveType: TypeResolveFn<'Album' | 'Artist' | 'Track', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Album' | 'Artist' | 'Episode' | 'Show' | 'Track', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
@@ -408,7 +506,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumsArgs, 'ids'>>;
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistArgs, 'id'>>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
+  episode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType, RequireFields<QueryEpisodeArgs, 'id'>>;
+  episodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType, RequireFields<QueryEpisodesArgs, 'ids'>>;
   health?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<QueryShowArgs, 'id'>>;
+  shows?: Resolver<Array<ResolversTypes['Show']>, ParentType, ContextType, RequireFields<QueryShowsArgs, 'ids'>>;
   track?: Resolver<ResolversTypes['Track'], ParentType, ContextType, RequireFields<QueryTrackArgs, 'id'>>;
   tracks?: Resolver<Array<ResolversTypes['Track']>, ParentType, ContextType, RequireFields<QueryTracksArgs, 'ids'>>;
 };
@@ -424,13 +526,31 @@ export type ResumePointResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ShowResolvers<ContextType = any, ParentType extends ResolversParentTypes['Show'] = ResolversParentTypes['Show']> = {
+  availableMarkets?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  copyrights?: Resolver<Array<ResolversTypes['Copyright']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  explicit?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  htmlDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  isExternallyHosted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  languages?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  mediaType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  publisher?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type TrackResolvers<ContextType = any, ParentType extends ResolversParentTypes['Track'] = ResolversParentTypes['Track']> = {
   album?: Resolver<ResolversTypes['Album'], ParentType, ContextType>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType>;
   availableMarkets?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   discNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  durationMs?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   explicit?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   externalIds?: Resolver<ResolversTypes['ExternalIds'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -450,6 +570,7 @@ export type Resolvers<ContextType = any> = {
   Album?: AlbumResolvers<ContextType>;
   Artist?: ArtistResolvers<ContextType>;
   Copyright?: CopyrightResolvers<ContextType>;
+  Episode?: EpisodeResolvers<ContextType>;
   ExternalIds?: ExternalIdsResolvers<ContextType>;
   ExternalUrls?: ExternalUrlsResolvers<ContextType>;
   Followers?: FollowersResolvers<ContextType>;
@@ -460,6 +581,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   Restrictions?: RestrictionsResolvers<ContextType>;
   ResumePoint?: ResumePointResolvers<ContextType>;
+  Show?: ShowResolvers<ContextType>;
   Track?: TrackResolvers<ContextType>;
 };
 
