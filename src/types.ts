@@ -13,6 +13,7 @@ import {
   Episode,
   ResumePoint,
   Show,
+  Pagination,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
@@ -115,4 +116,20 @@ export interface ShowAPIResponse extends Omit<Show, ShowCaseCorrections> {
   html_description: string;
   media_type: number;
   available_markets?: string[];
+}
+
+export interface APISearchResponse<TItem>
+  extends Omit<Pagination, "next" | "previous"> {
+  items: TItem[];
+  limit: number;
+  offset: number;
+  total: number;
+}
+
+export interface FullSearchResponse {
+  albums?: APISearchResponse<AlbumAPIResponse>;
+  artists?: APISearchResponse<ArtistAPIResponse>;
+  episodes?: APISearchResponse<EpisodeAPIResponse>;
+  shows?: APISearchResponse<ShowAPIResponse>;
+  tracks?: APISearchResponse<TrackAPIResponse>;
 }

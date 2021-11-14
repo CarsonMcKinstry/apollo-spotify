@@ -1,13 +1,17 @@
 import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
 import request from "request";
-import { Album, Artist, Episode, Show, Track } from "./gql-types";
+import { Album, Artist, Episode, ItemType, Show, Track } from "./gql-types";
+
 import { responseMapper } from "./responseMapper";
+import { mapSearchResult } from "./schemas/search";
 
 import {
   AlbumAPIResponse,
+  APISearchResponse,
   ArtistAPIResponse,
   EpisodeAPIResponse,
+  FullSearchResponse,
   ShowAPIResponse,
   TrackAPIResponse,
 } from "./types";
@@ -288,5 +292,40 @@ export class Spotify extends RESTDataSource {
     return shows.map((show) => {
       return responseMapper(show);
     });
+  }
+
+  async search(
+    q: string,
+    type: ItemType[],
+    options: {
+      market?: string | null;
+      limit?: number | null;
+      offset?: number | null;
+      includeExternal?: boolean | null;
+    } = {}
+  ) {
+    const { includeExternal, ...restOptions } = options;
+
+    const query: Record<string, Object> = this.omitNull({
+      offset: 0,
+      limit: 20,
+      query: q,
+      type,
+      ...restOptions,
+    });
+
+    if (includeExternal) {
+      query.includeExternal = "audio";
+    }
+
+    const result = await this.get<FullSearchResponse>("/search", query);
+
+    return mapSearchResult(result);
+  }
+
+  omitNull<T>(object: T) {
+    return Object.fromEntries(
+      Object.entries(object).filter(([, value]) => value != null)
+    );
   }
 }

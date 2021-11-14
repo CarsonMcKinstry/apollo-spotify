@@ -1,5 +1,5 @@
 import { fieldResolver } from "../../fieldResolver";
-import { Artist } from "../../gql-types";
+import { Artist, ItemType } from "../../gql-types";
 import { Resolvers } from "../../types";
 
 const artistFieldResolver = fieldResolver<Artist>("getArtist");
@@ -7,6 +7,8 @@ const artistFieldResolver = fieldResolver<Artist>("getArtist");
 export const artistResolvers: Resolvers = {
   Query: {
     artist(_, { id }, { dataSources }) {
+      dataSources.spotify.search("elvis", [ItemType.Artist]);
+
       return dataSources.spotify.getArtist(id);
     },
     artists(_, { ids }, { dataSources }) {
