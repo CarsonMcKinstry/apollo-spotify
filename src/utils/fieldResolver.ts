@@ -1,6 +1,5 @@
-import { Spotify } from ".";
-import { Maybe } from "./gql-types";
-import { Resolver } from "./types";
+import { Spotify } from "../SpotifyDataSource";
+import { Resolver } from "../types";
 
 export const fieldResolver =
   <TParent extends { id: string }>(method: keyof Spotify) =>

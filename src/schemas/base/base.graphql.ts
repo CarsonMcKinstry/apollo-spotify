@@ -16,8 +16,8 @@ export const baseTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
   }
 
   type ExternalIds {

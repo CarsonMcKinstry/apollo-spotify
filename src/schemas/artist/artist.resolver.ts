@@ -1,4 +1,4 @@
-import { fieldResolver } from "../../fieldResolver";
+import { fieldResolver } from "../../utils";
 import { Artist, ItemType } from "../../gql-types";
 import { Resolvers } from "../../types";
 

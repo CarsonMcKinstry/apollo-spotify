@@ -1,19 +1,33 @@
 import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
 
 import request from "request";
-import { Album, Artist, Episode, ItemType, Show, Track } from "./gql-types";
+import {
+  Album,
+  AlbumResponse,
+  Artist,
+  Episode,
+  ItemType,
+  Show,
+  Track,
+  TrackResponse,
+} from "./gql-types";
 
-import { responseMapper } from "./responseMapper";
-import { mapSearchResult } from "./schemas/search";
+import {
+  mapSearchResponse,
+  mapSearchResult,
+  addNextPrevious,
+} from "./schemas/search";
 
 import {
   AlbumAPIResponse,
+  APISearchResponse,
   ArtistAPIResponse,
   EpisodeAPIResponse,
   FullSearchResponse,
   ShowAPIResponse,
   TrackAPIResponse,
 } from "./types";
+import { omitNull, responseMapper } from "./utils";
 
 interface ClientGrant {
   access_token: string;
@@ -305,7 +319,7 @@ export class Spotify extends RESTDataSource {
   ) {
     const { includeExternal, ...restOptions } = options;
 
-    const query: Record<string, Object> = this.omitNull({
+    const query: Record<string, Object> = omitNull({
       offset: 0,
       limit: 20,
       query: q,
@@ -322,9 +336,30 @@ export class Spotify extends RESTDataSource {
     return mapSearchResult(result);
   }
 
-  omitNull<T>(object: T) {
-    return Object.fromEntries(
-      Object.entries(object).filter(([, value]) => value != null)
+  async getTracksByAlbum(
+    albumId: string,
+    options: {
+      market?: string | null;
+      limit?: number | null;
+      offset?: number | null;
+    } = {}
+  ): Promise<TrackResponse> {
+    const { limit = 20, offset = 0, market } = options;
+
+    const query: Record<string, Object> = omitNull({
+      limit: limit ? limit : 20,
+      offset: offset ? offset : 0,
+    });
+
+    if (market) {
+      query.market = market;
+    }
+
+    const result = await this.get<APISearchResponse<TrackAPIResponse>>(
+      `/albums/${albumId}/tracks`,
+      query
     );
+
+    return responseMapper(addNextPrevious(mapSearchResponse(result, "tracks")));
   }
 }

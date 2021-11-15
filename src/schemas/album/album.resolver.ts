@@ -1,11 +1,9 @@
 import { Resolvers } from "../../types";
-import { fieldResolver } from "../../fieldResolver";
+import { fieldResolver } from "../../utils";
 
 import { Album } from "../../gql-types";
 
 const albumFieldResolver = fieldResolver<Album>("getAlbum");
-
-const f = albumFieldResolver("availableMarkets");
 
 export const albumResolvers: Resolvers = {
   Query: {
@@ -23,5 +21,8 @@ export const albumResolvers: Resolvers = {
     externalUrls: albumFieldResolver("externalUrls"),
     availableMarkets: albumFieldResolver("availableMarkets"),
     totalTracks: albumFieldResolver("totalTracks"),
+    tracks({ id }, _, { dataSources }) {
+      return dataSources.spotify.getTracksByAlbum(id);
+    },
   },
 };

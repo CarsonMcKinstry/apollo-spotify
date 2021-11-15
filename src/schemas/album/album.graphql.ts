@@ -24,6 +24,6 @@ export const albumTypeDefs = gql`
     images: [Image!]!
 
     totalTracks: Int!
-    # tracks: TrackResponse!
+    tracks: TrackResponse!
   }
 `;

@@ -27,15 +27,7 @@ export const trackTypeDefs = gql`
   }
 
   extend type Query {
-    # searchTracks(
-    #     query: String!
-    #     limit: Int
-    #     offset: Int
-    #     market: String
-    # ): TrackResponse!
     track(id: ID!, market: String): Track!
     tracks(ids: [ID!]!, market: String): [Track!]!
-    # tracksByAlbum(albumId: ID!): TrackResponse!
-    # topTracksForArtist(artistId: ID!): [Track!]!
   }
 `;

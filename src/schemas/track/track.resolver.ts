@@ -1,4 +1,8 @@
+import { Track } from "../../gql-types";
 import { Resolvers } from "../../types";
+import { fieldResolver } from "../../utils";
+
+const trackFieldResolver = fieldResolver<Track>("getTrack");
 
 export const trackResolvers: Resolvers = {
   Query: {
@@ -8,5 +12,13 @@ export const trackResolvers: Resolvers = {
     tracks(_, { ids, market }, { dataSources }) {
       return dataSources.spotify.getTracks(ids, market ?? undefined);
     },
+  },
+  Track: {
+    album: trackFieldResolver("album"),
+    discNumber: trackFieldResolver("discNumber"),
+    duration: trackFieldResolver("duration"),
+    trackNumber: trackFieldResolver("trackNumber"),
+    externalIds: trackFieldResolver("externalIds"),
+    isLocal: trackFieldResolver("isLocal"),
   },
 };

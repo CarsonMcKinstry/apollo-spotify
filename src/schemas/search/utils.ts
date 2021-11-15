@@ -1,6 +1,6 @@
 import { SearchResponse, Pagination } from "../../gql-types";
 import { FullSearchResponse, APISearchResponse } from "../../types";
-import { responseMapper } from "../../responseMapper";
+import { responseMapper } from "../../utils";
 
 export const mapSearchResponse = <TItem>(
   response: APISearchResponse<TItem>,
@@ -47,14 +47,23 @@ export const mapSearchResult = (
 export const addNextPrevious = <TItem>(
   response: APISearchResponse<TItem>
 ): Pagination => {
-  const { limit, offset } = response;
+  const { limit, offset, next: nextUri, previous: prevUri, ...rest } = response;
 
-  const next = offset + limit;
-  const previous = offset - limit > 0 ? offset - limit : 0;
-
-  return {
-    ...response,
-    next,
-    previous,
+  const out: Pagination = {
+    limit,
+    offset,
+    next: null,
+    previous: null,
+    ...rest,
   };
+
+  if (nextUri !== null) {
+    out.next = offset + limit;
+  }
+
+  if (prevUri !== null) {
+    out.previous = offset - limit;
+  }
+
+  return out;
 };

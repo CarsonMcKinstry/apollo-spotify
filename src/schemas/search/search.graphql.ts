@@ -54,8 +54,8 @@ export const searchTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
 
     artists: [Artist!]!
   }
@@ -64,8 +64,8 @@ export const searchTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
 
     tracks: [Track!]!
   }
@@ -74,8 +74,8 @@ export const searchTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
 
     albums: [Album!]!
   }
@@ -84,8 +84,8 @@ export const searchTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
 
     shows: [Show!]!
   }
@@ -94,8 +94,8 @@ export const searchTypeDefs = gql`
     limit: Int!
     offset: Int!
     total: Int!
-    next: Int!
-    previous: Int!
+    next: Int
+    previous: Int
 
     episodes: [Episode!]!
   }

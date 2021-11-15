@@ -1,5 +1,12 @@
 import gql from "graphql-tag";
 
+/**
+ * TO ADD
+ * artists albums
+ * artists top tracks
+ * related artists
+ */
+
 export const artistTypeDefs = gql`
   extend type Query {
     artist(id: ID!): Artist

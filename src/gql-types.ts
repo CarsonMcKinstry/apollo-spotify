@@ -27,6 +27,7 @@ export type Album = Item & {
   releaseDatePrecision: DatePrecision;
   restrictions?: Maybe<Restrictions>;
   totalTracks: Scalars['Int'];
+  tracks: TrackResponse;
   type: ItemType;
   uri: Scalars['String'];
 };
@@ -35,9 +36,9 @@ export type AlbumResponse = Pagination & {
   __typename?: 'AlbumResponse';
   albums: Array<Album>;
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
 };
 
@@ -64,9 +65,9 @@ export type ArtistResponse = Pagination & {
   __typename?: 'ArtistResponse';
   artists: Array<Artist>;
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
 };
 
@@ -115,9 +116,9 @@ export type EpisodeResponse = Pagination & {
   __typename?: 'EpisodeResponse';
   episodes: Array<Episode>;
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
 };
 
@@ -168,9 +169,9 @@ export type LinkedFrom = {
 
 export type Pagination = {
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
 };
 
@@ -351,9 +352,9 @@ export type Show = Item & {
 export type ShowResponse = Pagination & {
   __typename?: 'ShowResponse';
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   shows: Array<Show>;
   total: Scalars['Int'];
 };
@@ -382,9 +383,9 @@ export type Track = Item & {
 export type TrackResponse = Pagination & {
   __typename?: 'TrackResponse';
   limit: Scalars['Int'];
-  next: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
-  previous: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
   tracks: Array<Track>;
 };
@@ -533,6 +534,7 @@ export type AlbumResolvers<ContextType = any, ParentType extends ResolversParent
   releaseDatePrecision?: Resolver<ResolversTypes['DatePrecision'], ParentType, ContextType>;
   restrictions?: Resolver<Maybe<ResolversTypes['Restrictions']>, ParentType, ContextType>;
   totalTracks?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  tracks?: Resolver<ResolversTypes['TrackResponse'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -541,9 +543,9 @@ export type AlbumResolvers<ContextType = any, ParentType extends ResolversParent
 export type AlbumResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['AlbumResponse'] = ResolversParentTypes['AlbumResponse']> = {
   albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -564,9 +566,9 @@ export type ArtistResolvers<ContextType = any, ParentType extends ResolversParen
 export type ArtistResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ArtistResponse'] = ResolversParentTypes['ArtistResponse']> = {
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -604,9 +606,9 @@ export type EpisodeResolvers<ContextType = any, ParentType extends ResolversPare
 export type EpisodeResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['EpisodeResponse'] = ResolversParentTypes['EpisodeResponse']> = {
   episodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -652,9 +654,9 @@ export type LinkedFromResolvers<ContextType = any, ParentType extends ResolversP
 export type PaginationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Pagination'] = ResolversParentTypes['Pagination']> = {
   __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'EpisodeResponse' | 'ShowResponse' | 'TrackResponse', ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
@@ -719,9 +721,9 @@ export type ShowResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type ShowResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShowResponse'] = ResolversParentTypes['ShowResponse']> = {
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   shows?: Resolver<Array<ResolversTypes['Show']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -750,9 +752,9 @@ export type TrackResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type TrackResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['TrackResponse'] = ResolversParentTypes['TrackResponse']> = {
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   tracks?: Resolver<Array<ResolversTypes['Track']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

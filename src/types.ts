@@ -118,8 +118,7 @@ export interface ShowAPIResponse extends Omit<Show, ShowCaseCorrections> {
   available_markets?: string[];
 }
 
-export interface APISearchResponse<TItem>
-  extends Omit<Pagination, "next" | "previous"> {
+export interface APISearchResponse<TItem> extends Pagination {
   items: TItem[];
   limit: number;
   offset: number;
