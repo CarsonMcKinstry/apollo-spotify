@@ -12,8 +12,10 @@ export const mapSearchResponse = <TItem>(
   };
 };
 
-export const mapSearchResult = (result: FullSearchResponse): SearchResponse => {
-  return Object.fromEntries(
+export const mapSearchResult = (
+  result: FullSearchResponse
+): Required<SearchResponse> => {
+  const out = Object.fromEntries(
     Object.entries(result)
       .map(([key, value]) => {
         return [key, mapSearchResponse<typeof value>(value, key)];
@@ -25,6 +27,21 @@ export const mapSearchResult = (result: FullSearchResponse): SearchResponse => {
         return [key, responseMapper(value)];
       })
   );
+
+  for (const key in ["tracks", "albums", "artists", "shows", "episodes"]) {
+    if (!(key in out)) {
+      out[key] = {
+        limit: 1,
+        offset: 0,
+        next: 0,
+        prev: 0,
+        total: 0,
+        [key]: [],
+      };
+    }
+  }
+
+  return out;
 };
 
 export const addNextPrevious = <TItem>(

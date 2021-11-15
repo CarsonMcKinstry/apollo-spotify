@@ -10,6 +10,36 @@ export const searchTypeDefs = gql`
       market: String
       includeExternal: Boolean
     ): SearchResponse
+    searchTrack(
+      query: String!
+      limit: Int
+      offset: Int
+      market: String
+    ): TrackResponse!
+    searchArtist(
+      query: String!
+      limit: Int
+      offset: Int
+      market: String
+    ): ArtistResponse!
+    searchAlbum(
+      query: String!
+      limit: Int
+      offset: Int
+      market: String
+    ): AlbumResponse!
+    searchShow(
+      query: String!
+      limit: Int
+      offset: Int
+      market: String
+    ): ShowResponse!
+    searchEpisode(
+      query: String!
+      limit: Int
+      offset: Int
+      market: String
+    ): EpisodeResponse!
   }
 
   type SearchResponse {

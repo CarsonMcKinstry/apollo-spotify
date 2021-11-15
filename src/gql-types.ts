@@ -184,6 +184,11 @@ export type Query = {
   episodes: Array<Episode>;
   health: Scalars['Boolean'];
   search?: Maybe<SearchResponse>;
+  searchAlbum: AlbumResponse;
+  searchArtist: ArtistResponse;
+  searchEpisode: EpisodeResponse;
+  searchShow: ShowResponse;
+  searchTrack: TrackResponse;
   show: Show;
   shows: Array<Show>;
   track: Track;
@@ -232,6 +237,46 @@ export type QuerySearchArgs = {
   offset?: Maybe<Scalars['Int']>;
   query: Scalars['String'];
   type: Array<ItemType>;
+};
+
+
+export type QuerySearchAlbumArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  query: Scalars['String'];
+};
+
+
+export type QuerySearchArtistArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  query: Scalars['String'];
+};
+
+
+export type QuerySearchEpisodeArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  query: Scalars['String'];
+};
+
+
+export type QuerySearchShowArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  query: Scalars['String'];
+};
+
+
+export type QuerySearchTrackArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+  query: Scalars['String'];
 };
 
 
@@ -622,6 +667,11 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   episodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType, RequireFields<QueryEpisodesArgs, 'ids'>>;
   health?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
+  searchAlbum?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QuerySearchAlbumArgs, 'query'>>;
+  searchArtist?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<QuerySearchArtistArgs, 'query'>>;
+  searchEpisode?: Resolver<ResolversTypes['EpisodeResponse'], ParentType, ContextType, RequireFields<QuerySearchEpisodeArgs, 'query'>>;
+  searchShow?: Resolver<ResolversTypes['ShowResponse'], ParentType, ContextType, RequireFields<QuerySearchShowArgs, 'query'>>;
+  searchTrack?: Resolver<ResolversTypes['TrackResponse'], ParentType, ContextType, RequireFields<QuerySearchTrackArgs, 'query'>>;
   show?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<QueryShowArgs, 'id'>>;
   shows?: Resolver<Array<ResolversTypes['Show']>, ParentType, ContextType, RequireFields<QueryShowsArgs, 'ids'>>;
   track?: Resolver<ResolversTypes['Track'], ParentType, ContextType, RequireFields<QueryTrackArgs, 'id'>>;

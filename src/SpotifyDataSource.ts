@@ -8,7 +8,6 @@ import { mapSearchResult } from "./schemas/search";
 
 import {
   AlbumAPIResponse,
-  APISearchResponse,
   ArtistAPIResponse,
   EpisodeAPIResponse,
   FullSearchResponse,
