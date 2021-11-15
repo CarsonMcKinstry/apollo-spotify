@@ -21,8 +21,8 @@ export const albumResolvers: Resolvers = {
     externalUrls: albumFieldResolver("externalUrls"),
     availableMarkets: albumFieldResolver("availableMarkets"),
     totalTracks: albumFieldResolver("totalTracks"),
-    tracks({ id }, _, { dataSources }) {
-      return dataSources.spotify.getTracksByAlbum(id);
+    tracks({ id }, args, { dataSources }) {
+      return dataSources.spotify.getTracksByAlbum(id, args);
     },
   },
 };

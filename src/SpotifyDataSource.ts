@@ -8,8 +8,10 @@ import {
   Episode,
   ItemType,
   Show,
+  TopTracks,
   Track,
   TrackResponse,
+  RelatedArtists,
 } from "./gql-types";
 
 import {
@@ -347,8 +349,8 @@ export class Spotify extends RESTDataSource {
     const { limit = 20, offset = 0, market } = options;
 
     const query: Record<string, Object> = omitNull({
-      limit: limit ? limit : 20,
-      offset: offset ? offset : 0,
+      limit,
+      offset,
     });
 
     if (market) {
@@ -361,5 +363,61 @@ export class Spotify extends RESTDataSource {
     );
 
     return responseMapper(addNextPrevious(mapSearchResponse(result, "tracks")));
+  }
+
+  async getAlbumsByArtist(
+    artistId: string,
+    options: {
+      market?: string | null;
+      limit?: number | null;
+      offset?: number | null;
+    } = {}
+  ): Promise<AlbumResponse> {
+    const { limit = 20, offset = 0, market } = options;
+
+    const query: Record<string, Object> = omitNull({
+      limit,
+      offset,
+    });
+
+    if (market) {
+      query.market = market;
+    }
+
+    const result = await this.get<APISearchResponse<AlbumAPIResponse>>(
+      `/artists/${artistId}/albums`,
+      query
+    );
+
+    return responseMapper(addNextPrevious(mapSearchResponse(result, "albums")));
+  }
+
+  async getTopTracksByArtist(
+    artistId: string,
+    market: string
+  ): Promise<TopTracks> {
+    const query: Record<string, Object> = {};
+
+    if (market) {
+      query.market = market;
+    }
+
+    const { tracks } = await this.get<{ tracks: TrackAPIResponse[] }>(
+      `/artists/${artistId}/top-tracks`,
+      query
+    );
+    return {
+      tracks: tracks.map((track) => responseMapper(track)),
+    };
+  }
+
+  async getRelatedArtistsByArtist(artistId: string): Promise<RelatedArtists> {
+    const { artists } = await this.get<{ artists: ArtistAPIResponse[] }>(
+      `/artists/${artistId}/related-artists`
+    );
+
+    return {
+      artists: artists.map((artist) => responseMapper(artist)),
+    };
   }
 }

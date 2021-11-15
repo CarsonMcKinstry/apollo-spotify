@@ -21,5 +21,14 @@ export const artistResolvers: Resolvers = {
     followers: artistFieldResolver("followers"),
     externalUrls: artistFieldResolver("externalUrls"),
     images: artistFieldResolver("images"),
+    albums({ id }, args, { dataSources }) {
+      return dataSources.spotify.getAlbumsByArtist(id, args);
+    },
+    topTracks({ id }, { market }, { dataSources }) {
+      return dataSources.spotify.getTopTracksByArtist(id, market);
+    },
+    relatedArtists({ id }, _, { dataSources }) {
+      return dataSources.spotify.getRelatedArtistsByArtist(id);
+    },
   },
 };

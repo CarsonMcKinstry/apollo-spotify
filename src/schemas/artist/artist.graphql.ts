@@ -1,16 +1,17 @@
 import gql from "graphql-tag";
 
-/**
- * TO ADD
- * artists albums
- * artists top tracks
- * related artists
- */
-
 export const artistTypeDefs = gql`
   extend type Query {
     artist(id: ID!): Artist
     artists(ids: [ID!]!): [Artist!]!
+  }
+
+  type TopTracks {
+    tracks: [Track!]!
+  }
+
+  type RelatedArtists {
+    artists: [Artist!]!
   }
 
   type Artist implements Item {
@@ -26,5 +27,8 @@ export const artistTypeDefs = gql`
     followers: Followers!
     externalUrls: ExternalUrls!
     images: [Image!]!
+    albums(limit: Int, offset: Int, market: String): AlbumResponse!
+    topTracks(market: String!): TopTracks!
+    relatedArtists: RelatedArtists!
   }
 `;
