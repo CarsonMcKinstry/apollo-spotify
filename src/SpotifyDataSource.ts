@@ -385,7 +385,6 @@ export class Spotify extends RESTDataSource {
       "/browse/new-releases",
       options
     );
-    console.log(albums);
 
     return responseMapper(
       addNextPrevious(mapSearchResponse<Album>(albums, "albums"))
