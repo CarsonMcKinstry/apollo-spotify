@@ -10,6 +10,9 @@ import {
   Track,
   TrackResponse,
   RelatedArtists,
+  Category,
+  CategoryResponse,
+  QueryCategoriesArgs,
 } from "./gql-types";
 
 import {
@@ -121,7 +124,7 @@ export class Spotify extends RESTDataSource {
         });
       }
     );
-
+    console.log(access_token);
     accessToken = access_token;
     accessTokenExpiry = Date.now() + expires_in * 1000;
   }
@@ -342,5 +345,22 @@ export class Spotify extends RESTDataSource {
     return {
       artists: artists.map((artist) => responseMapper(artist)),
     };
+  }
+
+  async getCategory(
+    id: string,
+    options: { country?: string; locale?: string } = {}
+  ): Promise<Category> {
+    return this.get<Category>(`/browse/categories/${id}`, options);
+  }
+
+  async getCategories(query: QueryCategoriesArgs): Promise<CategoryResponse> {
+    const { categories } = await this.get<{
+      categories: APISearchResponse<Category>;
+    }>("/browse/categories", omitNull(query));
+
+    return responseMapper(
+      addNextPrevious(mapSearchResponse<Category>(categories, "categories"))
+    );
   }
 }

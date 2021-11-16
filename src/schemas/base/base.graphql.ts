@@ -32,8 +32,8 @@ export const baseTypeDefs = gql`
 
   type Image {
     url: String!
-    height: Int!
-    width: Int!
+    height: Int
+    width: Int
   }
 
   type Restrictions {
@@ -83,5 +83,30 @@ export const baseTypeDefs = gql`
   enum CopyrightType {
     copyright
     performance
+  }
+
+  type Category {
+    id: ID!
+    name: String!
+    icons: [Image!]!
+  }
+
+  type CategoryResponse implements Pagination {
+    categories: [Category!]!
+    limit: Int!
+    offset: Int!
+    next: Int!
+    previous: Int!
+    total: Int!
+  }
+
+  type Query {
+    category(id: ID!, country: String, locale: String): Category
+    categories(
+      limit: Int
+      offset: Int
+      country: String
+      locale: String
+    ): CategoryResponse!
   }
 `;

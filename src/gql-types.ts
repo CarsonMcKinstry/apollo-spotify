@@ -93,6 +93,23 @@ export type ArtistResponse = Pagination & {
   total: Scalars['Int'];
 };
 
+export type Category = {
+  __typename?: 'Category';
+  icons: Array<Image>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+export type CategoryResponse = Pagination & {
+  __typename?: 'CategoryResponse';
+  categories: Array<Category>;
+  limit: Scalars['Int'];
+  next: Scalars['Int'];
+  offset: Scalars['Int'];
+  previous: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
 export enum CopyrightType {
   Copyright = 'copyright',
   Performance = 'performance'
@@ -123,9 +140,9 @@ export type Followers = {
 
 export type Image = {
   __typename?: 'Image';
-  height: Scalars['Int'];
+  height?: Maybe<Scalars['Int']>;
   url: Scalars['String'];
-  width: Scalars['Int'];
+  width?: Maybe<Scalars['Int']>;
 };
 
 export type Item = {
@@ -163,6 +180,8 @@ export type Query = {
   albums: Array<Album>;
   artist?: Maybe<Artist>;
   artists: Array<Artist>;
+  categories: CategoryResponse;
+  category?: Maybe<Category>;
   search?: Maybe<SearchResponse>;
   searchAlbum: AlbumResponse;
   searchArtist: ArtistResponse;
@@ -191,6 +210,21 @@ export type QueryArtistArgs = {
 
 export type QueryArtistsArgs = {
   ids: Array<Scalars['ID']>;
+};
+
+
+export type QueryCategoriesArgs = {
+  country?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryCategoryArgs = {
+  country?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  locale?: Maybe<Scalars['String']>;
 };
 
 
@@ -379,6 +413,8 @@ export type ResolversTypes = {
   Artist: ResolverTypeWrapper<Artist>;
   ArtistResponse: ResolverTypeWrapper<ArtistResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Category: ResolverTypeWrapper<Category>;
+  CategoryResponse: ResolverTypeWrapper<CategoryResponse>;
   CopyrightType: CopyrightType;
   DatePrecision: DatePrecision;
   ExternalIds: ResolverTypeWrapper<ExternalIds>;
@@ -390,7 +426,7 @@ export type ResolversTypes = {
   Item: ResolversTypes['Album'] | ResolversTypes['Artist'] | ResolversTypes['Track'];
   ItemType: ItemType;
   LinkedFrom: ResolverTypeWrapper<LinkedFrom>;
-  Pagination: ResolversTypes['AlbumResponse'] | ResolversTypes['ArtistResponse'] | ResolversTypes['TrackResponse'];
+  Pagination: ResolversTypes['AlbumResponse'] | ResolversTypes['ArtistResponse'] | ResolversTypes['CategoryResponse'] | ResolversTypes['TrackResponse'];
   Query: ResolverTypeWrapper<{}>;
   RelatedArtists: ResolverTypeWrapper<RelatedArtists>;
   RestrictionReason: RestrictionReason;
@@ -410,6 +446,8 @@ export type ResolversParentTypes = {
   Artist: Artist;
   ArtistResponse: ArtistResponse;
   Boolean: Scalars['Boolean'];
+  Category: Category;
+  CategoryResponse: CategoryResponse;
   ExternalIds: ExternalIds;
   ExternalUrls: ExternalUrls;
   Followers: Followers;
@@ -418,7 +456,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'] | ResolversParentTypes['Track'];
   LinkedFrom: LinkedFrom;
-  Pagination: ResolversParentTypes['AlbumResponse'] | ResolversParentTypes['ArtistResponse'] | ResolversParentTypes['TrackResponse'];
+  Pagination: ResolversParentTypes['AlbumResponse'] | ResolversParentTypes['ArtistResponse'] | ResolversParentTypes['CategoryResponse'] | ResolversParentTypes['TrackResponse'];
   Query: {};
   RelatedArtists: RelatedArtists;
   Restrictions: Restrictions;
@@ -484,6 +522,23 @@ export type ArtistResponseResolvers<ContextType = any, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
+  icons?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CategoryResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CategoryResponse'] = ResolversParentTypes['CategoryResponse']> = {
+  categories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
+  limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ExternalIdsResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExternalIds'] = ResolversParentTypes['ExternalIds']> = {
   ean?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   isrc?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -502,9 +557,9 @@ export type FollowersResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type ImageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = {
-  height?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  height?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  width?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  width?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -523,7 +578,7 @@ export type LinkedFromResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type PaginationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Pagination'] = ResolversParentTypes['Pagination']> = {
-  __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'TrackResponse', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'CategoryResponse' | 'TrackResponse', ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -536,6 +591,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumsArgs, 'ids'>>;
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistArgs, 'id'>>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
+  categories?: Resolver<ResolversTypes['CategoryResponse'], ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
+  category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
   searchAlbum?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QuerySearchAlbumArgs, 'query'>>;
   searchArtist?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<QuerySearchArtistArgs, 'query'>>;
@@ -608,6 +665,8 @@ export type Resolvers<ContextType = any> = {
   AlbumResponse?: AlbumResponseResolvers<ContextType>;
   Artist?: ArtistResolvers<ContextType>;
   ArtistResponse?: ArtistResponseResolvers<ContextType>;
+  Category?: CategoryResolvers<ContextType>;
+  CategoryResponse?: CategoryResponseResolvers<ContextType>;
   ExternalIds?: ExternalIdsResolvers<ContextType>;
   ExternalUrls?: ExternalUrlsResolvers<ContextType>;
   Followers?: FollowersResolvers<ContextType>;
