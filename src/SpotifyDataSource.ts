@@ -377,4 +377,18 @@ export class Spotify extends RESTDataSource {
       addNextPrevious(mapSearchResponse<Category>(categories, "categories"))
     );
   }
+
+  async getNewReleases(
+    options: { country?: string; limit?: number; offset?: number } = {}
+  ): Promise<AlbumResponse> {
+    const { albums } = await this.get<{ albums: APISearchResponse<Album> }>(
+      "/browse/new-releases",
+      options
+    );
+    console.log(albums);
+
+    return responseMapper(
+      addNextPrevious(mapSearchResponse<Album>(albums, "albums"))
+    );
+  }
 }

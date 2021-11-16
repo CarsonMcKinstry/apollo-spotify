@@ -200,6 +200,7 @@ export type Query = {
   artists: Array<Artist>;
   categories: CategoryResponse;
   category?: Maybe<Category>;
+  newReleases: AlbumResponse;
   search?: Maybe<SearchResponse>;
   searchAlbum: AlbumResponse;
   searchArtist: ArtistResponse;
@@ -243,6 +244,13 @@ export type QueryCategoryArgs = {
   country?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryNewReleasesArgs = {
+  country?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
@@ -634,6 +642,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
   categories?: Resolver<ResolversTypes['CategoryResponse'], ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  newReleases?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QueryNewReleasesArgs, never>>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
   searchAlbum?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QuerySearchAlbumArgs, 'query'>>;
   searchArtist?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<QuerySearchArtistArgs, 'query'>>;

@@ -4,6 +4,7 @@ export const albumTypeDefs = gql`
   type Query {
     album(id: ID!, market: String): Album!
     albums(ids: [ID!]!, market: String): [Album!]!
+    newReleases(country: String, limit: Int, offset: Int): AlbumResponse!
   }
 
   type Album implements Item {

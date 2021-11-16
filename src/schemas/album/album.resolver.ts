@@ -1,5 +1,5 @@
 import { Resolvers } from "../../types";
-import { fieldResolver } from "../../utils";
+import { fieldResolver, omitNull } from "../../utils";
 
 import { Album } from "../../gql-types";
 
@@ -12,6 +12,9 @@ export const albumResolvers: Resolvers = {
     },
     albums(_, { ids, market }, { dataSources }) {
       return dataSources.spotify.getAlbums(ids, market ?? undefined);
+    },
+    newReleases(_, args, { dataSources }) {
+      return dataSources.spotify.getNewReleases(omitNull(args));
     },
   },
   Album: {
