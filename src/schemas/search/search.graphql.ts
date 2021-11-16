@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const searchTypeDefs = gql`
-  extend type Query {
+  type Query {
     search(
       query: String!
       type: [ItemType!]!
@@ -28,26 +28,12 @@ export const searchTypeDefs = gql`
       offset: Int
       market: String
     ): AlbumResponse!
-    searchShow(
-      query: String!
-      limit: Int
-      offset: Int
-      market: String
-    ): ShowResponse!
-    searchEpisode(
-      query: String!
-      limit: Int
-      offset: Int
-      market: String
-    ): EpisodeResponse!
   }
 
   type SearchResponse {
     tracks: TrackResponse
     artists: ArtistResponse
     albums: AlbumResponse
-    shows: ShowResponse
-    episodes: EpisodeResponse
   }
 
   type ArtistResponse implements Pagination {
@@ -78,25 +64,5 @@ export const searchTypeDefs = gql`
     previous: Int
 
     albums: [Album!]!
-  }
-
-  type ShowResponse implements Pagination {
-    limit: Int!
-    offset: Int!
-    total: Int!
-    next: Int
-    previous: Int
-
-    shows: [Show!]!
-  }
-
-  type EpisodeResponse implements Pagination {
-    limit: Int!
-    offset: Int!
-    total: Int!
-    next: Int
-    previous: Int
-
-    episodes: [Episode!]!
   }
 `;

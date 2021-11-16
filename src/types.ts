@@ -10,9 +10,7 @@ import {
   Track,
   ExternalIds,
   LinkedFrom,
-  Episode,
   ResumePoint,
-  Show,
   Pagination,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
@@ -90,34 +88,6 @@ type EpisodeCaseCorrections =
   | "resumePoint"
   | "duration";
 
-export interface EpisodeAPIResponse
-  extends Omit<Episode, EpisodeCaseCorrections> {
-  external_urls: ExternalUrls;
-  audio_preview_url: string;
-  html_description: string;
-  is_externally_hosted: boolean;
-  is_playable: boolean;
-  release_date: string;
-  release_date_precision: DatePrecision;
-  resume_point: ResumePoint;
-  duration_ms: number;
-}
-
-type ShowCaseCorrections =
-  | "htmlDescription"
-  | "externalUrls"
-  | "isExternallyHosted"
-  | "mediaType"
-  | "availableMarkets";
-
-export interface ShowAPIResponse extends Omit<Show, ShowCaseCorrections> {
-  external_urls: ExternalUrls;
-  is_externally_hosted: boolean;
-  html_description: string;
-  media_type: number;
-  available_markets?: string[];
-}
-
 export interface APISearchResponse<TItem> extends Pagination {
   items: TItem[];
   limit: number;
@@ -128,7 +98,5 @@ export interface APISearchResponse<TItem> extends Pagination {
 export interface FullSearchResponse {
   albums?: APISearchResponse<AlbumAPIResponse>;
   artists?: APISearchResponse<ArtistAPIResponse>;
-  episodes?: APISearchResponse<EpisodeAPIResponse>;
-  shows?: APISearchResponse<ShowAPIResponse>;
   tracks?: APISearchResponse<TrackAPIResponse>;
 }

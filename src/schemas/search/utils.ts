@@ -28,7 +28,7 @@ export const mapSearchResult = (
       })
   );
 
-  for (const key in ["tracks", "albums", "artists", "shows", "episodes"]) {
+  for (const key in ["tracks", "albums", "artists"]) {
     if (!(key in out)) {
       out[key] = {
         limit: 1,

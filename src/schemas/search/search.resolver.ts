@@ -54,31 +54,5 @@ export const searchResolvers: Resolvers = {
 
       return albums!;
     },
-    async searchEpisode(_, { query, market, limit, offset }, { dataSources }) {
-      const { episodes } = await dataSources.spotify.search(
-        query,
-        [ItemType.Episode],
-        {
-          market,
-          limit,
-          offset,
-        }
-      );
-
-      return episodes!;
-    },
-    async searchShow(_, { query, market, limit, offset }, { dataSources }) {
-      const { shows } = await dataSources.spotify.search(
-        query,
-        [ItemType.Show],
-        {
-          market,
-          limit,
-          offset,
-        }
-      );
-
-      return shows!;
-    },
   },
 };

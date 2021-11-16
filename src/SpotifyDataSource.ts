@@ -5,9 +5,7 @@ import {
   Album,
   AlbumResponse,
   Artist,
-  Episode,
   ItemType,
-  Show,
   TopTracks,
   Track,
   TrackResponse,
@@ -24,9 +22,7 @@ import {
   AlbumAPIResponse,
   APISearchResponse,
   ArtistAPIResponse,
-  EpisodeAPIResponse,
   FullSearchResponse,
-  ShowAPIResponse,
   TrackAPIResponse,
 } from "./types";
 import { omitNull, responseMapper } from "./utils";
@@ -233,79 +229,6 @@ export class Spotify extends RESTDataSource {
       };
 
       return responseMapper(track);
-    });
-  }
-
-  async getEpisode(id: string, market?: string): Promise<Episode> {
-    const query: Record<string, Object> = {};
-
-    if (market) {
-      query.market = market;
-    }
-
-    const { duration_ms, ...episode } = await this.get<EpisodeAPIResponse>(
-      `/episodes/${id}`,
-      query
-    );
-
-    return responseMapper({
-      duration: duration_ms,
-      ...episode,
-    });
-  }
-
-  async getEpisodes(ids: string[], market?: string): Promise<Episode[]> {
-    const query: Record<string, Object> = {
-      ids,
-    };
-
-    if (market) {
-      query.market = market;
-    }
-
-    const { episodes } = await this.get<{ episodes: EpisodeAPIResponse[] }>(
-      "/episodes",
-      query
-    );
-
-    return episodes.map(({ duration_ms, ...episode }) => {
-      const track = {
-        duration: duration_ms,
-        ...episode,
-      };
-
-      return responseMapper(track);
-    });
-  }
-
-  async getShow(id: string, market?: string): Promise<Show> {
-    const query: Record<string, Object> = {};
-
-    if (market) {
-      query.market = market;
-    }
-
-    const show = await this.get<ShowAPIResponse>(`/shows/${id}`, query);
-
-    return responseMapper(show);
-  }
-
-  async getShows(ids: string[], market?: string): Promise<Show[]> {
-    const query: Record<string, Object> = {
-      ids,
-    };
-
-    if (market) {
-      query.market = market;
-    }
-
-    const { shows } = await this.get<{ shows: ShowAPIResponse[] }>(
-      "/episodes",
-      query
-    );
-
-    return shows.map((show) => {
-      return responseMapper(show);
     });
   }
 

@@ -26,7 +26,7 @@ export const trackTypeDefs = gql`
     isLocal: Boolean!
   }
 
-  extend type Query {
+  type Query {
     track(id: ID!, market: String): Track!
     tracks(ids: [ID!]!, market: String): [Track!]!
   }

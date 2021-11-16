@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const albumTypeDefs = gql`
-  extend type Query {
+  type Query {
     album(id: ID!, market: String): Album!
     albums(ids: [ID!]!, market: String): [Album!]!
   }

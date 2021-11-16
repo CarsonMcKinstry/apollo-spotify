@@ -1,10 +1,6 @@
 import gql from "graphql-tag";
 
 export const baseTypeDefs = gql`
-  type Query {
-    health: Boolean!
-  }
-
   interface Item {
     id: ID!
     name: String!
@@ -47,11 +43,6 @@ export const baseTypeDefs = gql`
   type ResumePoint {
     fullyPlayed: Boolean!
     timestamp: Int!
-  }
-
-  type Copyright {
-    text: String!
-    type: CopyrightType!
   }
 
   type Followers {

@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const artistTypeDefs = gql`
-  extend type Query {
+  type Query {
     artist(id: ID!): Artist
     artists(ids: [ID!]!): [Artist!]!
   }
