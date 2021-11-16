@@ -12,6 +12,7 @@ import {
   LinkedFrom,
   ResumePoint,
   Pagination,
+  AudioFeatures,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
@@ -77,17 +78,6 @@ export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   [key: string]: any;
 }
 
-type EpisodeCaseCorrections =
-  | "externalUrls"
-  | "audioPreviewUrl"
-  | "htmlDescription"
-  | "isExternallyPlayable"
-  | "isPlayable"
-  | "releaseDate"
-  | "releaseDatePrecision"
-  | "resumePoint"
-  | "duration";
-
 export interface APISearchResponse<TItem> extends Pagination {
   items: TItem[];
   limit: number;
@@ -99,4 +89,12 @@ export interface FullSearchResponse {
   albums?: APISearchResponse<AlbumAPIResponse>;
   artists?: APISearchResponse<ArtistAPIResponse>;
   tracks?: APISearchResponse<TrackAPIResponse>;
+}
+
+type AudioFeaturesCaseCorrections = "duration" | "time_signature";
+
+export interface AudioFeaturesAPIResponse
+  extends Omit<AudioFeatures, AudioFeaturesCaseCorrections> {
+  duration_ms: number;
+  time_signature: number;
 }

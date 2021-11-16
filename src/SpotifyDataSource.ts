@@ -13,6 +13,7 @@ import {
   Category,
   CategoryResponse,
   QueryCategoriesArgs,
+  AudioFeatures,
 } from "./gql-types";
 
 import {
@@ -25,6 +26,7 @@ import {
   AlbumAPIResponse,
   APISearchResponse,
   ArtistAPIResponse,
+  AudioFeaturesAPIResponse,
   FullSearchResponse,
   TrackAPIResponse,
 } from "./types";
@@ -124,7 +126,6 @@ export class Spotify extends RESTDataSource {
         });
       }
     );
-    console.log(access_token);
     accessToken = access_token;
     accessTokenExpiry = Date.now() + expires_in * 1000;
   }
@@ -209,6 +210,19 @@ export class Spotify extends RESTDataSource {
     };
 
     return responseMapper(track);
+  }
+
+  async getTrackAudioFeatures(id: string): Promise<AudioFeatures> {
+    const audioFeatures = await this.get<AudioFeaturesAPIResponse>(
+      `/audio-features/${id}`
+    );
+
+    const { duration_ms, ...rest } = audioFeatures;
+
+    return responseMapper({
+      ...rest,
+      duration: duration_ms,
+    });
   }
 
   async getTracks(ids: string[], market?: string): Promise<Track[]> {

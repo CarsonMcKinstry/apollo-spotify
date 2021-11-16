@@ -20,5 +20,8 @@ export const trackResolvers: Resolvers = {
     trackNumber: trackFieldResolver("trackNumber"),
     externalIds: trackFieldResolver("externalIds"),
     isLocal: trackFieldResolver("isLocal"),
+    audioFeatures({ id }, _, { dataSources }) {
+      return dataSources.spotify.getTrackAudioFeatures(id);
+    },
   },
 };

@@ -24,6 +24,24 @@ export const trackTypeDefs = gql`
     linkedFrom: LinkedFrom
     isPlayable: Boolean
     isLocal: Boolean!
+    audioFeatures: AudioFeatures!
+  }
+
+  type AudioFeatures {
+    acousticness: Float!
+    danceability: Float!
+    duration: Int!
+    energy: Float!
+    instrumentalness: Float!
+    key: Int!
+    liveness: Float!
+    loudness: Float!
+    mode: Int!
+    speechiness: Float!
+    temp: Float
+    timeSignature: Int!
+    type: String!
+    valence: Float!
   }
 
   type Query {

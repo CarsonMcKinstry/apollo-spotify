@@ -93,6 +93,24 @@ export type ArtistResponse = Pagination & {
   total: Scalars['Int'];
 };
 
+export type AudioFeatures = {
+  __typename?: 'AudioFeatures';
+  acousticness: Scalars['Float'];
+  danceability: Scalars['Float'];
+  duration: Scalars['Int'];
+  energy: Scalars['Float'];
+  instrumentalness: Scalars['Float'];
+  key: Scalars['Int'];
+  liveness: Scalars['Float'];
+  loudness: Scalars['Float'];
+  mode: Scalars['Int'];
+  speechiness: Scalars['Float'];
+  temp?: Maybe<Scalars['Float']>;
+  timeSignature: Scalars['Int'];
+  type: Scalars['String'];
+  valence: Scalars['Float'];
+};
+
 export type Category = {
   __typename?: 'Category';
   icons: Array<Image>;
@@ -311,6 +329,7 @@ export type Track = Item & {
   __typename?: 'Track';
   album: Album;
   artists: Array<Artist>;
+  audioFeatures: AudioFeatures;
   availableMarkets?: Maybe<Array<Scalars['String']>>;
   discNumber: Scalars['Int'];
   duration: Scalars['Int'];
@@ -412,6 +431,7 @@ export type ResolversTypes = {
   AlbumType: AlbumType;
   Artist: ResolverTypeWrapper<Artist>;
   ArtistResponse: ResolverTypeWrapper<ArtistResponse>;
+  AudioFeatures: ResolverTypeWrapper<AudioFeatures>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Category: ResolverTypeWrapper<Category>;
   CategoryResponse: ResolverTypeWrapper<CategoryResponse>;
@@ -419,6 +439,7 @@ export type ResolversTypes = {
   DatePrecision: DatePrecision;
   ExternalIds: ResolverTypeWrapper<ExternalIds>;
   ExternalUrls: ResolverTypeWrapper<ExternalUrls>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   Followers: ResolverTypeWrapper<Followers>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Image: ResolverTypeWrapper<Image>;
@@ -445,11 +466,13 @@ export type ResolversParentTypes = {
   AlbumResponse: AlbumResponse;
   Artist: Artist;
   ArtistResponse: ArtistResponse;
+  AudioFeatures: AudioFeatures;
   Boolean: Scalars['Boolean'];
   Category: Category;
   CategoryResponse: CategoryResponse;
   ExternalIds: ExternalIds;
   ExternalUrls: ExternalUrls;
+  Float: Scalars['Float'];
   Followers: Followers;
   ID: Scalars['ID'];
   Image: Image;
@@ -519,6 +542,24 @@ export type ArtistResponseResolvers<ContextType = any, ParentType extends Resolv
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AudioFeaturesResolvers<ContextType = any, ParentType extends ResolversParentTypes['AudioFeatures'] = ResolversParentTypes['AudioFeatures']> = {
+  acousticness?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  danceability?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  energy?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  instrumentalness?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  liveness?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  loudness?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  mode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  speechiness?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  temp?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  timeSignature?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  valence?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -632,6 +673,7 @@ export type TopTracksResolvers<ContextType = any, ParentType extends ResolversPa
 export type TrackResolvers<ContextType = any, ParentType extends ResolversParentTypes['Track'] = ResolversParentTypes['Track']> = {
   album?: Resolver<ResolversTypes['Album'], ParentType, ContextType>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType>;
+  audioFeatures?: Resolver<ResolversTypes['AudioFeatures'], ParentType, ContextType>;
   availableMarkets?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   discNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -665,6 +707,7 @@ export type Resolvers<ContextType = any> = {
   AlbumResponse?: AlbumResponseResolvers<ContextType>;
   Artist?: ArtistResolvers<ContextType>;
   ArtistResponse?: ArtistResponseResolvers<ContextType>;
+  AudioFeatures?: AudioFeaturesResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   CategoryResponse?: CategoryResponseResolvers<ContextType>;
   ExternalIds?: ExternalIdsResolvers<ContextType>;
