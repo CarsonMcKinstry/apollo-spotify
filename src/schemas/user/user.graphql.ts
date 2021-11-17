@@ -1,21 +1,39 @@
 import { gql } from "graphql-tag";
 export const userTypeDefs = gql`
-
-    interface User {}
-
-  type User {
+  interface User {
     id: ID!
-    country: String
-    displayName: String
-    email: String
-    explicitContent: ExplicitContentSettings
-    externalUrls: ExternalUrls
-    followers: Followers
-    images: [Image!]
-    product: string
+    displayName: String!
+    externalUrls: ExternalUrls!
+    followers: Followers!
+    images: [Image!]!
     type: String!
     uri: String!
-    topItems: UserTopItems!
+  }
+
+  type Me implements User {
+    id: ID!
+    displayName: String!
+    externalUrls: ExternalUrls!
+    followers: Followers!
+    images: [Image!]!
+    type: String!
+    uri: String!
+    country: String
+    email: String
+    explicitContent: ExplicitContentSettings
+    product: String
+    topArtists(limit: Int, offset: Int, timeRange: TimeRange): ArtistResponse!
+    topTracks(limit: Int, offset: Int, timeRange: TimeRange): TrackResponse!
+  }
+
+  type UserProfile implements User {
+    id: ID!
+    displayName: String!
+    externalUrls: ExternalUrls!
+    followers: Followers!
+    images: [Image!]!
+    type: String!
+    uri: String!
   }
 
   type ExplicitContentSettings {
@@ -23,14 +41,9 @@ export const userTypeDefs = gql`
     filterLocked: Boolean!
   }
 
-  type UserTopItems {
-    artists(limit: Int, offset: Int, timeRange: TimeRange): ArtistResponse!
-    tracks(limit: Int, offset: Int, timeRange: TimeRange): TrackResponse!
-  }
-
   type Query {
-      me: User!
-      user(userId: ID!): User
+    me: Me!
+    user(userId: ID!): UserProfile!
   }
 
   enum TimeRange {

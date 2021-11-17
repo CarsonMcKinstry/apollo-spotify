@@ -139,6 +139,12 @@ export enum DatePrecision {
   Year = 'year'
 }
 
+export type ExplicitContentSettings = {
+  __typename?: 'ExplicitContentSettings';
+  filterEnabled: Scalars['Boolean'];
+  filterLocked: Scalars['Boolean'];
+};
+
 export type ExternalIds = {
   __typename?: 'ExternalIds';
   ean?: Maybe<Scalars['String']>;
@@ -184,6 +190,37 @@ export type LinkedFrom = {
   artists: Array<Artist>;
 };
 
+export type Me = User & {
+  __typename?: 'Me';
+  country?: Maybe<Scalars['String']>;
+  displayName: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  explicitContent?: Maybe<ExplicitContentSettings>;
+  externalUrls: ExternalUrls;
+  followers: Followers;
+  id: Scalars['ID'];
+  images: Array<Image>;
+  product?: Maybe<Scalars['String']>;
+  topArtists: ArtistResponse;
+  topTracks: TrackResponse;
+  type: Scalars['String'];
+  uri: Scalars['String'];
+};
+
+
+export type MeTopArtistsArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  timeRange?: Maybe<TimeRange>;
+};
+
+
+export type MeTopTracksArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  timeRange?: Maybe<TimeRange>;
+};
+
 export type Pagination = {
   limit: Scalars['Int'];
   next?: Maybe<Scalars['Int']>;
@@ -200,6 +237,7 @@ export type Query = {
   artists: Array<Artist>;
   categories: CategoryResponse;
   category?: Maybe<Category>;
+  me: Me;
   newReleases: AlbumResponse;
   search?: Maybe<SearchResponse>;
   searchAlbum: AlbumResponse;
@@ -207,6 +245,7 @@ export type Query = {
   searchTrack: TrackResponse;
   track: Track;
   tracks: Array<Track>;
+  user: UserProfile;
 };
 
 
@@ -299,6 +338,11 @@ export type QueryTracksArgs = {
   market?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryUserArgs = {
+  userId: Scalars['ID'];
+};
+
 export type RelatedArtists = {
   __typename?: 'RelatedArtists';
   artists: Array<Artist>;
@@ -327,6 +371,12 @@ export type SearchResponse = {
   artists?: Maybe<ArtistResponse>;
   tracks?: Maybe<TrackResponse>;
 };
+
+export enum TimeRange {
+  LongTerm = 'longTerm',
+  MediumTerm = 'mediumTerm',
+  ShortTerm = 'shortTerm'
+}
 
 export type TopTracks = {
   __typename?: 'TopTracks';
@@ -363,6 +413,27 @@ export type TrackResponse = Pagination & {
   previous?: Maybe<Scalars['Int']>;
   total: Scalars['Int'];
   tracks: Array<Track>;
+};
+
+export type User = {
+  displayName: Scalars['String'];
+  externalUrls: ExternalUrls;
+  followers: Followers;
+  id: Scalars['ID'];
+  images: Array<Image>;
+  type: Scalars['String'];
+  uri: Scalars['String'];
+};
+
+export type UserProfile = User & {
+  __typename?: 'UserProfile';
+  displayName: Scalars['String'];
+  externalUrls: ExternalUrls;
+  followers: Followers;
+  id: Scalars['ID'];
+  images: Array<Image>;
+  type: Scalars['String'];
+  uri: Scalars['String'];
 };
 
 
@@ -445,6 +516,7 @@ export type ResolversTypes = {
   CategoryResponse: ResolverTypeWrapper<CategoryResponse>;
   CopyrightType: CopyrightType;
   DatePrecision: DatePrecision;
+  ExplicitContentSettings: ResolverTypeWrapper<ExplicitContentSettings>;
   ExternalIds: ResolverTypeWrapper<ExternalIds>;
   ExternalUrls: ResolverTypeWrapper<ExternalUrls>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -455,6 +527,7 @@ export type ResolversTypes = {
   Item: ResolversTypes['Album'] | ResolversTypes['Artist'] | ResolversTypes['Track'];
   ItemType: ItemType;
   LinkedFrom: ResolverTypeWrapper<LinkedFrom>;
+  Me: ResolverTypeWrapper<Me>;
   Pagination: ResolversTypes['AlbumResponse'] | ResolversTypes['ArtistResponse'] | ResolversTypes['CategoryResponse'] | ResolversTypes['TrackResponse'];
   Query: ResolverTypeWrapper<{}>;
   RelatedArtists: ResolverTypeWrapper<RelatedArtists>;
@@ -463,9 +536,12 @@ export type ResolversTypes = {
   ResumePoint: ResolverTypeWrapper<ResumePoint>;
   SearchResponse: ResolverTypeWrapper<SearchResponse>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  TimeRange: TimeRange;
   TopTracks: ResolverTypeWrapper<TopTracks>;
   Track: ResolverTypeWrapper<Track>;
   TrackResponse: ResolverTypeWrapper<TrackResponse>;
+  User: ResolversTypes['Me'] | ResolversTypes['UserProfile'];
+  UserProfile: ResolverTypeWrapper<UserProfile>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -478,6 +554,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Category: Category;
   CategoryResponse: CategoryResponse;
+  ExplicitContentSettings: ExplicitContentSettings;
   ExternalIds: ExternalIds;
   ExternalUrls: ExternalUrls;
   Float: Scalars['Float'];
@@ -487,6 +564,7 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'] | ResolversParentTypes['Track'];
   LinkedFrom: LinkedFrom;
+  Me: Me;
   Pagination: ResolversParentTypes['AlbumResponse'] | ResolversParentTypes['ArtistResponse'] | ResolversParentTypes['CategoryResponse'] | ResolversParentTypes['TrackResponse'];
   Query: {};
   RelatedArtists: RelatedArtists;
@@ -497,6 +575,8 @@ export type ResolversParentTypes = {
   TopTracks: TopTracks;
   Track: Track;
   TrackResponse: TrackResponse;
+  User: ResolversParentTypes['Me'] | ResolversParentTypes['UserProfile'];
+  UserProfile: UserProfile;
 };
 
 export type AlbumResolvers<ContextType = any, ParentType extends ResolversParentTypes['Album'] = ResolversParentTypes['Album']> = {
@@ -588,6 +668,12 @@ export type CategoryResponseResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ExplicitContentSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExplicitContentSettings'] = ResolversParentTypes['ExplicitContentSettings']> = {
+  filterEnabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  filterLocked?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ExternalIdsResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExternalIds'] = ResolversParentTypes['ExternalIds']> = {
   ean?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   isrc?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -626,6 +712,23 @@ export type LinkedFromResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Me'] = ResolversParentTypes['Me']> = {
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  explicitContent?: Resolver<Maybe<ResolversTypes['ExplicitContentSettings']>, ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  followers?: Resolver<ResolversTypes['Followers'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  product?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  topArtists?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<MeTopArtistsArgs, never>>;
+  topTracks?: Resolver<ResolversTypes['TrackResponse'], ParentType, ContextType, RequireFields<MeTopTracksArgs, never>>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type PaginationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Pagination'] = ResolversParentTypes['Pagination']> = {
   __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'CategoryResponse' | 'TrackResponse', ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -642,6 +745,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
   categories?: Resolver<ResolversTypes['CategoryResponse'], ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   newReleases?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QueryNewReleasesArgs, never>>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
   searchAlbum?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QuerySearchAlbumArgs, 'query'>>;
@@ -649,6 +753,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   searchTrack?: Resolver<ResolversTypes['TrackResponse'], ParentType, ContextType, RequireFields<QuerySearchTrackArgs, 'query'>>;
   track?: Resolver<ResolversTypes['Track'], ParentType, ContextType, RequireFields<QueryTrackArgs, 'id'>>;
   tracks?: Resolver<Array<ResolversTypes['Track']>, ParentType, ContextType, RequireFields<QueryTracksArgs, 'ids'>>;
+  user?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>;
 };
 
 export type RelatedArtistsResolvers<ContextType = any, ParentType extends ResolversParentTypes['RelatedArtists'] = ResolversParentTypes['RelatedArtists']> = {
@@ -711,6 +816,28 @@ export type TrackResponseResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  __resolveType: TypeResolveFn<'Me' | 'UserProfile', ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  followers?: Resolver<ResolversTypes['Followers'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type UserProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserProfile'] = ResolversParentTypes['UserProfile']> = {
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  followers?: Resolver<ResolversTypes['Followers'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Album?: AlbumResolvers<ContextType>;
   AlbumResponse?: AlbumResponseResolvers<ContextType>;
@@ -719,12 +846,14 @@ export type Resolvers<ContextType = any> = {
   AudioFeatures?: AudioFeaturesResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   CategoryResponse?: CategoryResponseResolvers<ContextType>;
+  ExplicitContentSettings?: ExplicitContentSettingsResolvers<ContextType>;
   ExternalIds?: ExternalIdsResolvers<ContextType>;
   ExternalUrls?: ExternalUrlsResolvers<ContextType>;
   Followers?: FollowersResolvers<ContextType>;
   Image?: ImageResolvers<ContextType>;
   Item?: ItemResolvers<ContextType>;
   LinkedFrom?: LinkedFromResolvers<ContextType>;
+  Me?: MeResolvers<ContextType>;
   Pagination?: PaginationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RelatedArtists?: RelatedArtistsResolvers<ContextType>;
@@ -734,5 +863,7 @@ export type Resolvers<ContextType = any> = {
   TopTracks?: TopTracksResolvers<ContextType>;
   Track?: TrackResolvers<ContextType>;
   TrackResponse?: TrackResponseResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  UserProfile?: UserProfileResolvers<ContextType>;
 };
 

@@ -1,4 +1,3 @@
-import { DataSource } from "apollo-datasource";
 import {
   Resolver as RawResolver,
   Resolvers as RawResolvers,
@@ -10,9 +9,10 @@ import {
   Track,
   ExternalIds,
   LinkedFrom,
-  ResumePoint,
   Pagination,
   AudioFeatures,
+  Me,
+  UserProfile,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
@@ -75,6 +75,27 @@ export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   is_local: boolean;
   linked_from: LinkedFrom;
   [key: string]: any;
+}
+
+type MeCaseCorrections = "externalUrls" | "displayName" | "explicitContent";
+
+interface ExplicitContentSettingsAPIResponse {
+  filter_enabled: boolean;
+  filter_locked: boolean;
+}
+
+export interface MeAPIResponse extends Omit<Me, MeCaseCorrections> {
+  external_urls: ExternalUrls;
+  displayName: string;
+  explicitContent?: ExplicitContentSettingsAPIResponse;
+}
+
+type UserProfileCaseCorrections = "";
+
+export interface UserProfileAPIResponse
+  extends Omit<UserProfile, UserProfileCaseCorrections> {
+  display_name: string;
+  external_urls: ExternalUrls;
 }
 
 export interface APISearchResponse<TItem> extends Pagination {

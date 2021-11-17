@@ -1,5 +1,6 @@
 import { RESTDataSource, RequestOptions } from "apollo-datasource-rest";
-
+import { AuthenticationError, ApolloError } from "apollo-server";
+import { snakeCase } from "lodash";
 import request from "request";
 import {
   Album,
@@ -14,6 +15,11 @@ import {
   CategoryResponse,
   QueryCategoriesArgs,
   AudioFeatures,
+  Me,
+  MeTopTracksArgs,
+  MeTopArtistsArgs,
+  ArtistResponse,
+  UserProfile,
 } from "./gql-types";
 
 import {
@@ -28,8 +34,10 @@ import {
   ArtistAPIResponse,
   AudioFeaturesAPIResponse,
   FullSearchResponse,
+  MeAPIResponse,
   SpotifySchemaContext,
   TrackAPIResponse,
+  UserProfileAPIResponse,
 } from "./types";
 import { omitNull, responseMapper } from "./utils";
 
@@ -394,5 +402,85 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
     return responseMapper(
       addNextPrevious(mapSearchResponse<Album>(albums, "albums"))
     );
+  }
+
+  async getMe(): Promise<Me> {
+    if (!this.context.spotifyAuthorizationToken) {
+      throw new AuthenticationError("No authorization token provided");
+    }
+
+    const me = await this.get<MeAPIResponse>("/me");
+
+    return responseMapper(me);
+  }
+
+  async getMyTopTracks(args: MeTopTracksArgs = {}): Promise<TrackResponse> {
+    if (!this.context.spotifyAuthorizationToken) {
+      throw new AuthenticationError("No authorization token provided");
+    }
+
+    const { timeRange, ...queryRest } = args;
+
+    const query = {
+      ...queryRest,
+      time_range: timeRange ? snakeCase(timeRange) : null,
+    };
+
+    try {
+      const topTracks = await this.get<APISearchResponse<Track>>(
+        "/me/top/tracks",
+        omitNull(query)
+      );
+
+      return responseMapper(
+        addNextPrevious(mapSearchResponse<Track>(topTracks, "tracks"))
+      );
+    } catch (err) {
+      const { extensions } = err as ApolloError;
+
+      if (extensions.response.status === 403) {
+        throw new AuthenticationError("Missing permissions for top tracks");
+      }
+
+      throw err;
+    }
+  }
+
+  async getMyTopArtists(args: MeTopArtistsArgs = {}): Promise<ArtistResponse> {
+    if (!this.context.spotifyAuthorizationToken) {
+      throw new AuthenticationError("No authorization token provided");
+    }
+
+    const { timeRange, ...queryRest } = args;
+
+    const query = {
+      ...queryRest,
+      time_range: timeRange ? snakeCase(timeRange) : null,
+    };
+
+    try {
+      const topArtists = await this.get<APISearchResponse<Artist>>(
+        "/me/top/artists",
+        omitNull(query)
+      );
+
+      return responseMapper(
+        addNextPrevious(mapSearchResponse<Artist>(topArtists, "artists"))
+      );
+    } catch (err) {
+      const { extensions } = err as ApolloError;
+
+      if (extensions.response.status === 403) {
+        throw new AuthenticationError("Missing permissions for top tracks");
+      }
+
+      throw err;
+    }
+  }
+
+  async getUser(id: string): Promise<UserProfile> {
+    const user = await this.get<UserProfileAPIResponse>(`/users/${id}`);
+
+    return responseMapper(user);
   }
 }
