@@ -17,10 +17,9 @@ import {
 import { Spotify } from "./SpotifyDataSource";
 
 export interface SpotifySchemaContext {
-  [key: string]: any;
+  spotifyAuthorizationToken?: string;
   dataSources: {
     spotify: Spotify;
-    [key: string]: DataSource<any>;
   };
 }
 

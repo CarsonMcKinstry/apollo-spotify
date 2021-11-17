@@ -28,6 +28,7 @@ import {
   ArtistAPIResponse,
   AudioFeaturesAPIResponse,
   FullSearchResponse,
+  SpotifySchemaContext,
   TrackAPIResponse,
 } from "./types";
 import { omitNull, responseMapper } from "./utils";
@@ -54,7 +55,7 @@ const isAuthFailure = (obj: any): obj is AuthFailure => {
 let accessToken: string | null = null;
 let accessTokenExpiry: number = Date.now();
 
-export class Spotify extends RESTDataSource {
+export class Spotify extends RESTDataSource<SpotifySchemaContext> {
   override baseURL = "https://api.spotify.com/v1";
 
   constructor(
@@ -131,11 +132,15 @@ export class Spotify extends RESTDataSource {
   }
 
   override async willSendRequest(req: RequestOptions) {
-    if (!this.isAuthorized) {
-      await this.authorize();
-    }
+    if (this.context.spotifyAuthorizationToken) {
+      req.headers.set("Authorization", this.context.spotifyAuthorizationToken);
+    } else {
+      if (!this.isAuthorized) {
+        await this.authorize();
+      }
 
-    req.headers.set("Authorization", `Bearer ${accessToken}`);
+      req.headers.set("Authorization", `Bearer ${accessToken}`);
+    }
   }
 
   /**

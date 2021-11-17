@@ -11,6 +11,15 @@ const server = new ApolloServer({
       ),
     };
   },
+  context: (context) => {
+    if (context.req.headers.authorization) {
+      return {
+        spotifyAuthorizationToken: context.req.headers.authorization,
+      };
+    }
+
+    return {};
+  },
   introspection: true,
 });
 

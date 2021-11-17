@@ -1,15 +1,17 @@
-import { Spotify } from "../SpotifyDataSource";
+import { Spotify } from "./../SpotifyDataSource";
 import { Resolver } from "../types";
 
 export const fieldResolver =
-  <TParent extends { id: string }>(method: keyof Spotify) =>
+  <TParent extends { id: string }>(
+    getMethod: (spotify: Spotify) => Spotify[keyof Spotify]
+  ) =>
   <TField extends keyof TParent>(field: TField): Resolver<TParent> =>
   async (parent, _, { dataSources: { spotify } }) => {
     if (field in parent) {
       return parent[field];
     }
 
-    const resolver = spotify[method].bind(spotify);
+    const resolver = getMethod(spotify) as Function;
 
     const result = await resolver(parent.id);
 

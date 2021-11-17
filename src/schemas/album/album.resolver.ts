@@ -3,7 +3,7 @@ import { fieldResolver, omitNull } from "../../utils";
 
 import { Album } from "../../gql-types";
 
-const albumFieldResolver = fieldResolver<Album>("getAlbum");
+const albumFieldResolver = fieldResolver<Album>((spotify) => spotify.getAlbum);
 
 export const albumResolvers: Resolvers = {
   Query: {

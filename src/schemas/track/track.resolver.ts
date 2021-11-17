@@ -2,7 +2,7 @@ import { Track } from "../../gql-types";
 import { Resolvers } from "../../types";
 import { fieldResolver } from "../../utils";
 
-const trackFieldResolver = fieldResolver<Track>("getTrack");
+const trackFieldResolver = fieldResolver<Track>((spotify) => spotify.getTrack);
 
 export const trackResolvers: Resolvers = {
   Query: {
