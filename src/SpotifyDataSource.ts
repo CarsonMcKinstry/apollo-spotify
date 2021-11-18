@@ -20,6 +20,10 @@ import {
   MeTopArtistsArgs,
   ArtistResponse,
   UserProfile,
+  Playlist,
+  PlaylistTracksArgs,
+  PlaylistTrack,
+  PlaylistTrackResponse,
 } from "./gql-types";
 
 import {
@@ -35,6 +39,7 @@ import {
   AudioFeaturesAPIResponse,
   FullSearchResponse,
   MeAPIResponse,
+  PlaylistAPIResponse,
   SpotifySchemaContext,
   TrackAPIResponse,
   UserProfileAPIResponse,
@@ -146,7 +151,6 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
       if (!this.isAuthorized) {
         await this.authorize();
       }
-
       req.headers.set("Authorization", `Bearer ${accessToken}`);
     }
   }
@@ -479,7 +483,10 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
   }
 
   async getUser(id: string): Promise<UserProfile> {
-    const user = await this.get<UserProfileAPIResponse>(`/users/${id}`);
+    const isSpotify = id === "";
+    const user = await this.get<UserProfileAPIResponse>(
+      `/users/${isSpotify ? "spotify" : id}`
+    );
 
     return responseMapper(user);
   }
@@ -496,5 +503,36 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
     const { markets } = await this.get<{ markets: string[] }>("/markets");
 
     return markets;
+  }
+
+  async getPlaylist(
+    id: string,
+    market?: string | null
+  ): Promise<Playlist | null> {
+    const query: Record<string, Object> = {};
+
+    if (market) {
+      query.market = market;
+    }
+
+    const playlist = await this.get<PlaylistAPIResponse>(
+      `/playlists/${id}`,
+      query
+    );
+
+    const { tracks, ...rest } = playlist;
+
+    return responseMapper(rest);
+  }
+
+  async getPlaylistTracks(
+    id: string,
+    args: PlaylistTracksArgs
+  ): Promise<PlaylistTrackResponse> {
+    const tracks = await this.get(`/playlists/${id}/tracks`, omitNull(args));
+
+    return responseMapper(
+      addNextPrevious(mapSearchResponse<PlaylistTrack>(tracks, "tracks"))
+    );
   }
 }

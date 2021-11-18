@@ -1,4 +1,10 @@
+import { UserProfile } from "../../gql-types";
 import { Resolvers } from "../../types";
+import { fieldResolver } from "../../utils";
+
+const userProfileFieldResolver = fieldResolver<UserProfile>(
+  (spotify) => spotify.getUser
+);
 
 export const userResolvers: Resolvers = {
   Query: {
@@ -16,5 +22,10 @@ export const userResolvers: Resolvers = {
     topArtists(_, args, { dataSources }) {
       return dataSources.spotify.getMyTopArtists(args);
     },
+  },
+  UserProfile: {
+    displayName: userProfileFieldResolver("displayName"),
+    followers: userProfileFieldResolver("followers"),
+    images: userProfileFieldResolver("images"),
   },
 };

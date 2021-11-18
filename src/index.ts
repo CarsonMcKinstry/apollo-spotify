@@ -10,6 +10,7 @@ import { albumTypeDefs, albumResolvers } from "./schemas/album";
 import { trackTypeDefs, trackResolvers } from "./schemas/track";
 import { searchResolvers, searchTypeDefs } from "./schemas/search";
 import { userResolvers, userTypeDefs } from "./schemas/user";
+import { playlistResolvers, playlistTypeDefs } from "./schemas/playlist";
 
 config();
 
@@ -21,6 +22,7 @@ export const schema = makeExecutableSchema<SpotifySchemaContext>({
     albumTypeDefs,
     artistTypeDefs,
     userTypeDefs,
+    playlistTypeDefs,
   ],
   resolvers: merge(
     baseResolvers,
@@ -28,7 +30,8 @@ export const schema = makeExecutableSchema<SpotifySchemaContext>({
     albumResolvers,
     trackResolvers,
     searchResolvers,
-    userResolvers
+    userResolvers,
+    playlistResolvers
   ),
 });
 

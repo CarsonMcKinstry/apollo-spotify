@@ -1,6 +1,8 @@
 import { SearchResponse, Pagination } from "../../gql-types";
 import { FullSearchResponse, APISearchResponse } from "../../types";
 import { responseMapper } from "../../utils";
+import { Url } from "url";
+import { parse as parseQuery } from "qs";
 
 export const mapSearchResponse = <TItem>(
   response: APISearchResponse<TItem>,
@@ -57,12 +59,20 @@ export const addNextPrevious = <TItem>(
     ...rest,
   };
 
-  if (nextUri !== null) {
-    out.next = offset + limit;
+  if (nextUri != null) {
+    const { searchParams } = new URL(nextUri);
+
+    if (searchParams.has("offset")) {
+      out.next = parseInt(searchParams.get("offset")!);
+    }
   }
 
-  if (prevUri !== null) {
-    out.previous = offset - limit;
+  if (prevUri != null) {
+    const { searchParams } = new URL(prevUri);
+
+    if (searchParams.has("offset")) {
+      out.previous = parseInt(searchParams.get("offset")!);
+    }
   }
 
   return out;

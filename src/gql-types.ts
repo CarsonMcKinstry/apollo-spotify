@@ -229,6 +229,49 @@ export type Pagination = {
   total: Scalars['Int'];
 };
 
+export type Playlist = {
+  __typename?: 'Playlist';
+  collaborative: Scalars['Boolean'];
+  description: Scalars['String'];
+  externalUrls: ExternalUrls;
+  followers: Followers;
+  id: Scalars['ID'];
+  images: Array<Image>;
+  name: Scalars['String'];
+  owner: UserProfile;
+  public: Scalars['Boolean'];
+  snapshotId: Scalars['String'];
+  tracks: PlaylistTrackResponse;
+  type: Scalars['String'];
+  uri: Scalars['String'];
+};
+
+
+export type PlaylistTracksArgs = {
+  limit?: Maybe<Scalars['Int']>;
+  market?: Maybe<Scalars['String']>;
+  offset?: Maybe<Scalars['Int']>;
+};
+
+export type PlaylistTrack = {
+  __typename?: 'PlaylistTrack';
+  addedAt?: Maybe<Scalars['String']>;
+  addedBy: UserProfile;
+  isLocal: Scalars['Boolean'];
+  primaryColor?: Maybe<Scalars['String']>;
+  track: Track;
+};
+
+export type PlaylistTrackResponse = Pagination & {
+  __typename?: 'PlaylistTrackResponse';
+  limit: Scalars['Int'];
+  next?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  previous?: Maybe<Scalars['Int']>;
+  total: Scalars['Int'];
+  tracks: Array<PlaylistTrack>;
+};
+
 export type Query = {
   __typename?: 'Query';
   album: Album;
@@ -241,6 +284,7 @@ export type Query = {
   markets: Array<Scalars['String']>;
   me: Me;
   newReleases: AlbumResponse;
+  playlist?: Maybe<Playlist>;
   search?: Maybe<SearchResponse>;
   searchAlbum: AlbumResponse;
   searchArtist: ArtistResponse;
@@ -292,6 +336,12 @@ export type QueryNewReleasesArgs = {
   country?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPlaylistArgs = {
+  id: Scalars['ID'];
+  market?: Maybe<Scalars['String']>;
 };
 
 
@@ -530,7 +580,10 @@ export type ResolversTypes = {
   ItemType: ItemType;
   LinkedFrom: ResolverTypeWrapper<LinkedFrom>;
   Me: ResolverTypeWrapper<Me>;
-  Pagination: ResolversTypes['AlbumResponse'] | ResolversTypes['ArtistResponse'] | ResolversTypes['CategoryResponse'] | ResolversTypes['TrackResponse'];
+  Pagination: ResolversTypes['AlbumResponse'] | ResolversTypes['ArtistResponse'] | ResolversTypes['CategoryResponse'] | ResolversTypes['PlaylistTrackResponse'] | ResolversTypes['TrackResponse'];
+  Playlist: ResolverTypeWrapper<Playlist>;
+  PlaylistTrack: ResolverTypeWrapper<PlaylistTrack>;
+  PlaylistTrackResponse: ResolverTypeWrapper<PlaylistTrackResponse>;
   Query: ResolverTypeWrapper<{}>;
   RelatedArtists: ResolverTypeWrapper<RelatedArtists>;
   RestrictionReason: RestrictionReason;
@@ -567,7 +620,10 @@ export type ResolversParentTypes = {
   Item: ResolversParentTypes['Album'] | ResolversParentTypes['Artist'] | ResolversParentTypes['Track'];
   LinkedFrom: LinkedFrom;
   Me: Me;
-  Pagination: ResolversParentTypes['AlbumResponse'] | ResolversParentTypes['ArtistResponse'] | ResolversParentTypes['CategoryResponse'] | ResolversParentTypes['TrackResponse'];
+  Pagination: ResolversParentTypes['AlbumResponse'] | ResolversParentTypes['ArtistResponse'] | ResolversParentTypes['CategoryResponse'] | ResolversParentTypes['PlaylistTrackResponse'] | ResolversParentTypes['TrackResponse'];
+  Playlist: Playlist;
+  PlaylistTrack: PlaylistTrack;
+  PlaylistTrackResponse: PlaylistTrackResponse;
   Query: {};
   RelatedArtists: RelatedArtists;
   Restrictions: Restrictions;
@@ -732,12 +788,48 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
 };
 
 export type PaginationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Pagination'] = ResolversParentTypes['Pagination']> = {
-  __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'CategoryResponse' | 'TrackResponse', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'AlbumResponse' | 'ArtistResponse' | 'CategoryResponse' | 'PlaylistTrackResponse' | 'TrackResponse', ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
+export type PlaylistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Playlist'] = ResolversParentTypes['Playlist']> = {
+  collaborative?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
+  followers?: Resolver<ResolversTypes['Followers'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType>;
+  public?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  snapshotId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tracks?: Resolver<ResolversTypes['PlaylistTrackResponse'], ParentType, ContextType, RequireFields<PlaylistTracksArgs, never>>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlaylistTrackResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlaylistTrack'] = ResolversParentTypes['PlaylistTrack']> = {
+  addedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  addedBy?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType>;
+  isLocal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  primaryColor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  track?: Resolver<ResolversTypes['Track'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlaylistTrackResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlaylistTrackResponse'] = ResolversParentTypes['PlaylistTrackResponse']> = {
+  limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  offset?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  tracks?: Resolver<Array<ResolversTypes['PlaylistTrack']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -751,6 +843,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   markets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   newReleases?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QueryNewReleasesArgs, never>>;
+  playlist?: Resolver<Maybe<ResolversTypes['Playlist']>, ParentType, ContextType, RequireFields<QueryPlaylistArgs, 'id'>>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
   searchAlbum?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QuerySearchAlbumArgs, 'query'>>;
   searchArtist?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<QuerySearchArtistArgs, 'query'>>;
@@ -859,6 +952,9 @@ export type Resolvers<ContextType = any> = {
   LinkedFrom?: LinkedFromResolvers<ContextType>;
   Me?: MeResolvers<ContextType>;
   Pagination?: PaginationResolvers<ContextType>;
+  Playlist?: PlaylistResolvers<ContextType>;
+  PlaylistTrack?: PlaylistTrackResolvers<ContextType>;
+  PlaylistTrackResponse?: PlaylistTrackResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RelatedArtists?: RelatedArtistsResolvers<ContextType>;
   Restrictions?: RestrictionsResolvers<ContextType>;

@@ -11,7 +11,7 @@ export const fieldResolver =
       return parent[field];
     }
 
-    const resolver = getMethod(spotify) as Function;
+    const resolver = (getMethod(spotify) as Function).bind(spotify);
 
     const result = await resolver(parent.id);
 

@@ -13,6 +13,8 @@ import {
   AudioFeatures,
   Me,
   UserProfile,
+  Playlist,
+  PlaylistTrack,
 } from "./gql-types";
 import { Spotify } from "./SpotifyDataSource";
 
@@ -77,6 +79,15 @@ export interface TrackAPIResponse extends Omit<Track, TrackCaseCorrections> {
   [key: string]: any;
 }
 
+type PlaylistCaseCorrections = "externalUrls" | "snapshotId" | "tracks";
+
+export interface PlaylistAPIResponse
+  extends Omit<Playlist, PlaylistCaseCorrections> {
+  external_urls: ExternalUrls;
+  snapshot_id: string;
+  tracks: APISearchResponse<PlaylistTrack>;
+}
+
 type MeCaseCorrections = "externalUrls" | "displayName" | "explicitContent";
 
 interface ExplicitContentSettingsAPIResponse {
@@ -98,7 +109,15 @@ export interface UserProfileAPIResponse
   external_urls: ExternalUrls;
 }
 
-export interface APISearchResponse<TItem> extends Pagination {
+interface APIPagination {
+  limit: number;
+  next?: string | null;
+  offset: number;
+  previous?: string | null;
+  total: number;
+}
+
+export interface APISearchResponse<TItem> extends APIPagination {
   items: TItem[];
   limit: number;
   offset: number;
