@@ -24,6 +24,9 @@ import {
   PlaylistTracksArgs,
   PlaylistTrack,
   PlaylistTrackResponse,
+  MePlaylistsArgs,
+  PlaylistResponse,
+  UserProfilePlaylistsArgs,
 } from "./gql-types";
 
 import {
@@ -482,6 +485,31 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
     }
   }
 
+  async getMyPlaylists(args: MePlaylistsArgs = {}): Promise<PlaylistResponse> {
+    if (!this.context.spotifyAuthorizationToken) {
+      throw new AuthenticationError("No authorization token provided");
+    }
+
+    try {
+      const playlists = await this.get<APISearchResponse<Playlist>>(
+        "/me/playlists",
+        omitNull(args)
+      );
+
+      return responseMapper(
+        addNextPrevious(mapSearchResponse<Playlist>(playlists, "playlists"))
+      );
+    } catch (err) {
+      const { extensions } = err as ApolloError;
+
+      if (extensions.response.status === 403) {
+        throw new AuthenticationError("Missing permissions for playlists");
+      }
+
+      throw err;
+    }
+  }
+
   async getUser(id: string): Promise<UserProfile> {
     const isSpotify = id === "";
     const user = await this.get<UserProfileAPIResponse>(
@@ -489,6 +517,20 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
     );
 
     return responseMapper(user);
+  }
+
+  async getUserPlaylists(
+    id: string,
+    args: UserProfilePlaylistsArgs
+  ): Promise<PlaylistResponse> {
+    const playlists = await this.get<APISearchResponse<Playlist>>(
+      `/users/${id}/playlists`,
+      omitNull(args)
+    );
+
+    return responseMapper(
+      addNextPrevious(mapSearchResponse<Playlist>(playlists, "playlists"))
+    );
   }
 
   async getGenres(): Promise<string[]> {

@@ -33,6 +33,15 @@ export const playlistTypeDefs = gql`
     tracks: [PlaylistTrack!]!
   }
 
+  type PlaylistResponse implements Pagination {
+    limit: Int!
+    offset: Int!
+    total: Int!
+    next: Int
+    previous: Int
+    playlists: [Playlist!]!
+  }
+
   type Query {
     playlist(id: ID!, market: String): Playlist
   }

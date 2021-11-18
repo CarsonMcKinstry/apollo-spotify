@@ -24,6 +24,7 @@ export const userTypeDefs = gql`
     product: String
     topArtists(limit: Int, offset: Int, timeRange: TimeRange): ArtistResponse!
     topTracks(limit: Int, offset: Int, timeRange: TimeRange): TrackResponse!
+    playlists(limit: Int, offset: Int): PlaylistResponse!
   }
 
   type UserProfile implements User {
@@ -34,6 +35,7 @@ export const userTypeDefs = gql`
     images: [Image!]!
     type: String!
     uri: String!
+    playlists(limit: Int, offset: Int): PlaylistResponse!
   }
 
   type ExplicitContentSettings {

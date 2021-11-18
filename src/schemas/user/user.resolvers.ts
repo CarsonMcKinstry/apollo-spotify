@@ -22,10 +22,16 @@ export const userResolvers: Resolvers = {
     topArtists(_, args, { dataSources }) {
       return dataSources.spotify.getMyTopArtists(args);
     },
+    playlists(_, args, { dataSources }) {
+      return dataSources.spotify.getMyPlaylists(args);
+    },
   },
   UserProfile: {
     displayName: userProfileFieldResolver("displayName"),
     followers: userProfileFieldResolver("followers"),
     images: userProfileFieldResolver("images"),
+    playlists({ id }, args, { dataSources }) {
+      return dataSources.spotify.getUserPlaylists(id, args);
+    },
   },
 };
