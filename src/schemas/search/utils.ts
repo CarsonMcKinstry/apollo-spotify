@@ -1,8 +1,6 @@
 import { SearchResponse, Pagination } from "../../gql-types";
 import { FullSearchResponse, APISearchResponse } from "../../types";
 import { responseMapper } from "../../utils";
-import { Url } from "url";
-import { parse as parseQuery } from "qs";
 
 export const mapSearchResponse = <TItem>(
   response: APISearchResponse<TItem>,
