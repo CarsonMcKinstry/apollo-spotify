@@ -179,9 +179,9 @@ export type Item = {
 export enum ItemType {
   Album = 'album',
   Artist = 'artist',
-  Episode = 'episode',
-  Show = 'show',
-  Track = 'track'
+  Playlist = 'playlist',
+  Track = 'track',
+  User = 'user'
 }
 
 export type LinkedFrom = {
@@ -204,7 +204,7 @@ export type Me = User & {
   product?: Maybe<Scalars['String']>;
   topArtists: ArtistResponse;
   topTracks: TrackResponse;
-  type: Scalars['String'];
+  type: ItemType;
   uri: Scalars['String'];
 };
 
@@ -249,7 +249,7 @@ export type Playlist = {
   public: Scalars['Boolean'];
   snapshotId: Scalars['String'];
   tracks: PlaylistTrackResponse;
-  type: Scalars['String'];
+  type: ItemType;
   uri: Scalars['String'];
 };
 
@@ -490,7 +490,7 @@ export type User = {
   followers: Followers;
   id: Scalars['ID'];
   images: Array<Image>;
-  type: Scalars['String'];
+  type: ItemType;
   uri: Scalars['String'];
 };
 
@@ -502,7 +502,7 @@ export type UserProfile = User & {
   id: Scalars['ID'];
   images: Array<Image>;
   playlists: PlaylistResponse;
-  type: Scalars['String'];
+  type: ItemType;
   uri: Scalars['String'];
 };
 
@@ -809,7 +809,7 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
   product?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   topArtists?: Resolver<ResolversTypes['ArtistResponse'], ParentType, ContextType, RequireFields<MeTopArtistsArgs, never>>;
   topTracks?: Resolver<ResolversTypes['TrackResponse'], ParentType, ContextType, RequireFields<MeTopTracksArgs, never>>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -835,7 +835,7 @@ export type PlaylistResolvers<ContextType = any, ParentType extends ResolversPar
   public?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   snapshotId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tracks?: Resolver<ResolversTypes['PlaylistTrackResponse'], ParentType, ContextType, RequireFields<PlaylistTracksArgs, never>>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -957,7 +957,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   followers?: Resolver<ResolversTypes['Followers'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
@@ -968,7 +968,7 @@ export type UserProfileResolvers<ContextType = any, ParentType extends Resolvers
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   images?: Resolver<Array<ResolversTypes['Image']>, ParentType, ContextType>;
   playlists?: Resolver<ResolversTypes['PlaylistResponse'], ParentType, ContextType, RequireFields<UserProfilePlaylistsArgs, never>>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ItemType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

@@ -12,7 +12,7 @@ export const playlistTypeDefs = gql`
     public: Boolean!
     snapshotId: String!
     tracks(market: String, limit: Int, offset: Int): PlaylistTrackResponse!
-    type: String!
+    type: ItemType!
     uri: String!
   }
 

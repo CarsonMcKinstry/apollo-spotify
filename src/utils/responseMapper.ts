@@ -9,7 +9,7 @@ export const responseMapper = <TResponse, TResult>(
     }
 
     if (Array.isArray(value)) {
-      return [camelCase(key), value.map(responseMapper)];
+      return [camelCase(key), value];
     }
 
     if (typeof value === "object") {

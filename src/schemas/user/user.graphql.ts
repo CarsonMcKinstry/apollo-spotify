@@ -6,7 +6,7 @@ export const userTypeDefs = gql`
     externalUrls: ExternalUrls!
     followers: Followers!
     images: [Image!]!
-    type: String!
+    type: ItemType!
     uri: String!
   }
 
@@ -16,7 +16,7 @@ export const userTypeDefs = gql`
     externalUrls: ExternalUrls!
     followers: Followers!
     images: [Image!]!
-    type: String!
+    type: ItemType!
     uri: String!
     country: String
     email: String
@@ -33,7 +33,7 @@ export const userTypeDefs = gql`
     externalUrls: ExternalUrls!
     followers: Followers!
     images: [Image!]!
-    type: String!
+    type: ItemType!
     uri: String!
     playlists(limit: Int, offset: Int): PlaylistResponse!
   }

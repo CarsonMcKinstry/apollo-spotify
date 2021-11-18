@@ -1652,19 +1652,19 @@
             "deprecationReason": null
           },
           {
-            "name": "episode",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "show",
+            "name": "playlist",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
             "name": "track",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2019,8 +2019,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -2403,8 +2403,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -4430,8 +4430,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -4613,8 +4613,8 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ItemType",
                 "ofType": null
               }
             },

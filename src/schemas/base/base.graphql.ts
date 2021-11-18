@@ -58,8 +58,8 @@ export const baseTypeDefs = gql`
     track
     artist
     album
-    episode
-    show
+    playlist
+    user
   }
 
   enum AlbumType {
