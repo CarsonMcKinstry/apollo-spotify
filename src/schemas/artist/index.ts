@@ -1,2 +1,2 @@
 export { artistTypeDefs } from "./artist.graphql";
-export { artistResolvers } from "./artist.resolver";
+export { artistResolvers } from "./artist.resolvers";

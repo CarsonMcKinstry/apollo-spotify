@@ -1,2 +1,2 @@
-export { albumResolvers } from "./album.resolver";
+export { albumResolvers } from "./album.resolvers";
 export { albumTypeDefs } from "./album.graphql";
