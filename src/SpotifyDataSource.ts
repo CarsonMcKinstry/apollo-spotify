@@ -483,4 +483,18 @@ export class Spotify extends RESTDataSource<SpotifySchemaContext> {
 
     return responseMapper(user);
   }
+
+  async getGenres(): Promise<string[]> {
+    const { genres } = await this.get<{ genres: string[] }>(
+      "/recommendations/available-genre-seeds"
+    );
+
+    return genres;
+  }
+
+  async getMarkets(): Promise<string[]> {
+    const { markets } = await this.get<{ markets: string[] }>("/markets");
+
+    return markets;
+  }
 }

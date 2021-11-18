@@ -14,5 +14,11 @@ export const baseResolvers: Resolvers = {
     categories(_, args, { dataSources }) {
       return dataSources.spotify.getCategories(args);
     },
+    genres(_parent, _args, { dataSources }) {
+      return dataSources.spotify.getGenres();
+    },
+    markets(_parent, _args, { dataSources }) {
+      return dataSources.spotify.getMarkets();
+    },
   },
 };

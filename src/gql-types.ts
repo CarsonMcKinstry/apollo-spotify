@@ -237,6 +237,8 @@ export type Query = {
   artists: Array<Artist>;
   categories: CategoryResponse;
   category?: Maybe<Category>;
+  genres: Array<Scalars['String']>;
+  markets: Array<Scalars['String']>;
   me: Me;
   newReleases: AlbumResponse;
   search?: Maybe<SearchResponse>;
@@ -745,6 +747,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
   categories?: Resolver<ResolversTypes['CategoryResponse'], ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  genres?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  markets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   newReleases?: Resolver<ResolversTypes['AlbumResponse'], ParentType, ContextType, RequireFields<QueryNewReleasesArgs, never>>;
   search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;

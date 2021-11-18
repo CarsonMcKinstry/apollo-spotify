@@ -108,5 +108,7 @@ export const baseTypeDefs = gql`
       country: String
       locale: String
     ): CategoryResponse!
+    genres: [String!]!
+    markets: [String!]!
   }
 `;
