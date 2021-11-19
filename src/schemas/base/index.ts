@@ -1,2 +1,3 @@
-export { baseTypeDefs } from "./base.graphql";
-export { baseResolvers } from "./base.resolvers";
+import * as baseTypeDefs from "./base.graphql";
+
+export { baseTypeDefs };

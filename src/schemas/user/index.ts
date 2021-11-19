@@ -1,2 +1,3 @@
-export { userTypeDefs } from "./user.graphql";
-export { userResolvers } from "./user.resolvers";
+import * as userTypeDefs from "./user.graphql";
+
+export { userTypeDefs };

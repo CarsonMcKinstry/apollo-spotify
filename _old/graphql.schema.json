@@ -249,7 +249,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Tracks",
+                "name": "TrackResponse",
                 "ofType": null
               }
             },
@@ -301,37 +301,8 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "AlbumType",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "album",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "compilation",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "single",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
-        "name": "Albums",
+        "name": "AlbumResponse",
         "description": null,
         "fields": [
           {
@@ -443,6 +414,35 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "AlbumType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "album",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "compilation",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "single",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Artist",
         "description": null,
@@ -493,7 +493,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Albums",
+                "name": "AlbumResponse",
                 "ofType": null
               }
             },
@@ -723,7 +723,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "Artists",
+        "name": "ArtistResponse",
         "description": null,
         "fields": [
           {
@@ -1144,7 +1144,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "CategoryPage",
+        "name": "CategoryResponse",
         "description": null,
         "fields": [
           {
@@ -1365,7 +1365,7 @@
         "fields": [
           {
             "name": "ean",
-            "description": "International Article Number",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1377,7 +1377,7 @@
           },
           {
             "name": "isrc",
-            "description": "International Standard Recording Code",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1389,7 +1389,7 @@
           },
           {
             "name": "upc",
-            "description": "Universal Product Code",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1412,7 +1412,7 @@
         "fields": [
           {
             "name": "spotify",
-            "description": "the Spotify URL for the current object",
+            "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -1634,7 +1634,7 @@
       {
         "kind": "ENUM",
         "name": "ItemType",
-        "description": "Represents the types that can be returned from\na search",
+        "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1652,7 +1652,19 @@
             "deprecationReason": null
           },
           {
+            "name": "playlist",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "track",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "user",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -1874,7 +1886,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Playlists",
+                "name": "PlaylistResponse",
                 "ofType": null
               }
             },
@@ -1939,7 +1951,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Artists",
+                "name": "ArtistResponse",
                 "ofType": null
               }
             },
@@ -1992,7 +2004,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Tracks",
+                "name": "TrackResponse",
                 "ofType": null
               }
             },
@@ -2008,7 +2020,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ObjectType",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -2044,29 +2056,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "ENUM",
-        "name": "ObjectType",
-        "description": "Represents any object that is not\na searchable object",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "playlist",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "user",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "INTERFACE",
         "name": "Pagination",
         "description": null,
@@ -2089,7 +2078,7 @@
           },
           {
             "name": "next",
-            "description": "The next offset for pagination, returns null if no more\nitems are available",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -2117,7 +2106,7 @@
           },
           {
             "name": "previous",
-            "description": "The previous offset for pagination, returns null if no\nitems precede the current list",
+            "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -2150,32 +2139,32 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "Albums",
+            "name": "AlbumResponse",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "Artists",
+            "name": "ArtistResponse",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "CategoryPage",
+            "name": "CategoryResponse",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "PlaylistTracks",
+            "name": "PlaylistResponse",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "Playlists",
+            "name": "PlaylistTrackResponse",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "Tracks",
+            "name": "TrackResponse",
             "ofType": null
           }
         ]
@@ -2399,7 +2388,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "PlaylistTracks",
+                "name": "PlaylistTrackResponse",
                 "ofType": null
               }
             },
@@ -2415,7 +2404,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ObjectType",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -2446,203 +2435,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "PlaylistTrack",
-        "description": null,
-        "fields": [
-          {
-            "name": "addedAt",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "addedBy",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "UserProfile",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "isLocal",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "primaryColor",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "track",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Track",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "PlaylistTracks",
-        "description": null,
-        "fields": [
-          {
-            "name": "limit",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "next",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "offset",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "previous",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "total",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "tracks",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "PlaylistTrack",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Pagination",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Playlists",
+        "name": "PlaylistResponse",
         "description": null,
         "fields": [
           {
@@ -2736,6 +2529,202 @@
                 "kind": "SCALAR",
                 "name": "Int",
                 "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Pagination",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PlaylistTrack",
+        "description": null,
+        "fields": [
+          {
+            "name": "addedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "addedBy",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserProfile",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isLocal",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "primaryColor",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "track",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Track",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PlaylistTrackResponse",
+        "description": null,
+        "fields": [
+          {
+            "name": "limit",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "next",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "offset",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "previous",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "total",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tracks",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "PlaylistTrack",
+                    "ofType": null
+                  }
+                }
               }
             },
             "isDeprecated": false,
@@ -3000,7 +2989,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "CategoryPage",
+                "name": "CategoryResponse",
                 "ofType": null
               }
             },
@@ -3170,7 +3159,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Albums",
+                "name": "AlbumResponse",
                 "ofType": null
               }
             },
@@ -3320,7 +3309,7 @@
             "deprecationReason": null
           },
           {
-            "name": "searchAlbums",
+            "name": "searchAlbum",
             "description": null,
             "args": [
               {
@@ -3381,7 +3370,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Albums",
+                "name": "AlbumResponse",
                 "ofType": null
               }
             },
@@ -3389,7 +3378,7 @@
             "deprecationReason": null
           },
           {
-            "name": "searchArtists",
+            "name": "searchArtist",
             "description": null,
             "args": [
               {
@@ -3450,7 +3439,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Artists",
+                "name": "ArtistResponse",
                 "ofType": null
               }
             },
@@ -3458,7 +3447,7 @@
             "deprecationReason": null
           },
           {
-            "name": "searchTracks",
+            "name": "searchTrack",
             "description": null,
             "args": [
               {
@@ -3519,7 +3508,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Tracks",
+                "name": "TrackResponse",
                 "ofType": null
               }
             },
@@ -3764,16 +3753,59 @@
       },
       {
         "kind": "OBJECT",
+        "name": "ResumePoint",
+        "description": null,
+        "fields": [
+          {
+            "name": "fullyPlayed",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "timestamp",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "SearchResponse",
         "description": null,
         "fields": [
           {
-            "name": "album",
+            "name": "albums",
             "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "Albums",
+              "name": "AlbumResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3785,7 +3817,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "Artists",
+              "name": "ArtistResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3797,7 +3829,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "Tracks",
+              "name": "TrackResponse",
               "ofType": null
             },
             "isDeprecated": false,
@@ -4186,7 +4218,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "Tracks",
+        "name": "TrackResponse",
         "description": null,
         "fields": [
           {
@@ -4399,7 +4431,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ObjectType",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -4566,7 +4598,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "Playlists",
+                "name": "PlaylistResponse",
                 "ofType": null
               }
             },
@@ -4582,7 +4614,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "ObjectType",
+                "name": "ItemType",
                 "ofType": null
               }
             },
@@ -5254,7 +5286,7 @@
       {
         "kind": "OBJECT",
         "name": "__Type",
-        "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByURL`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+        "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
         "fields": [
           {
             "name": "kind",
@@ -5297,7 +5329,7 @@
             "deprecationReason": null
           },
           {
-            "name": "specifiedByURL",
+            "name": "specifiedByUrl",
             "description": null,
             "args": [],
             "type": {

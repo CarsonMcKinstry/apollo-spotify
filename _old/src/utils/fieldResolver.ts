@@ -1,4 +1,4 @@
-import { Spotify } from "./../SpotifyDataSource";
+import { Spotify } from "../SpotifyDataSource";
 import { Resolver } from "../types";
 
 export const fieldResolver =

@@ -1,2 +1,3 @@
-export { trackTypeDefs } from "./track.graphql";
-export { trackResolvers } from "./track.resolvers";
+import * as trackTypeDefs from "./track.graphql";
+
+export { trackTypeDefs };

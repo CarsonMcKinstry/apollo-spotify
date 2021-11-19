@@ -1,2 +1,3 @@
-export { albumResolvers } from "./album.resolvers";
-export { albumTypeDefs } from "./album.graphql";
+import * as albumTypeDefs from "./album.graphql";
+
+export { albumTypeDefs };

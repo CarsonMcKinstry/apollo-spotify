@@ -1,0 +1,159 @@
+# ================= INTERFACES ==================
+
+interface Item {
+  id: ID!
+  name: String!
+  type: ItemType!
+  uri: String!
+}
+
+interface Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  """
+  The next offset for pagination, returns null if no more
+  items are available
+  """
+  next: Int
+  """
+  The previous offset for pagination, returns null if no
+  items precede the current list
+  """
+  previous: Int
+}
+
+# ==================== TYPES ====================
+
+type ExternalUrls {
+  """
+  the Spotify URL for the current object
+  """
+  spotify: String!
+}
+
+type Followers {
+  total: Int!
+}
+
+type Image {
+  url: String!
+  height: Int
+  width: Int
+}
+
+type LinkedFrom {
+  album: Album!
+  artists: [Artist!]!
+}
+
+type Restrictions {
+  reason: RestrictionReason!
+}
+
+type TopTracks {
+  tracks: [Track!]!
+}
+
+type RelatedArtists {
+  artists: [Artist!]!
+}
+
+type ExplicitContentSettings {
+  filterEnabled: Boolean!
+  filterLocked: Boolean!
+}
+
+type ExternalIds {
+  """
+  International Standard Recording Code
+  """
+  isrc: String
+  """
+  International Article Number
+  """
+  ean: String
+  """
+  Universal Product Code
+  """
+  upc: String
+}
+
+# ==================== ENUMS ====================
+
+"""
+Represents the types that can be returned from
+a search
+"""
+enum ItemType {
+  track
+  artist
+  album
+}
+
+"""
+Represents any object that is not
+a searchable object
+"""
+enum ObjectType {
+  playlist
+  user
+}
+
+enum AlbumType {
+  album
+  single
+  compilation
+}
+
+enum DatePrecision {
+  year
+  month
+  day
+}
+
+enum RestrictionReason {
+  market
+  product
+  explicit
+}
+
+enum CopyrightType {
+  copyright
+  performance
+}
+
+enum TimeRange {
+  longTerm
+  mediumTerm
+  shortTerm
+}
+
+# ==================== BASE QUERIES ====================
+
+type Category {
+  id: ID!
+  name: String!
+  icons: [Image!]!
+}
+
+type CategoryPage implements Pagination {
+  categories: [Category!]!
+  limit: Int!
+  offset: Int!
+  next: Int!
+  previous: Int!
+  total: Int!
+}
+
+type Query {
+  category(id: ID!, country: String, locale: String): Category
+  categories(
+    limit: Int
+    offset: Int
+    country: String
+    locale: String
+  ): CategoryPage!
+  genres: [String!]!
+  markets: [String!]!
+}

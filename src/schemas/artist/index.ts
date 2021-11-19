@@ -1,2 +1,3 @@
-export { artistTypeDefs } from "./artist.graphql";
-export { artistResolvers } from "./artist.resolvers";
+import * as artistTypeDefs from "./artist.graphql";
+
+export { artistTypeDefs };

@@ -1,0 +1,45 @@
+type Playlist {
+  id: ID!
+  type: ObjectType!
+  uri: String!
+  externalUrls: ExternalUrls!
+  collaborative: Boolean!
+  description: String!
+  followers: Followers!
+  images: [Image!]!
+  name: String!
+  owner: UserProfile!
+  public: Boolean!
+  snapshotId: String!
+  tracks(market: String, limit: Int, offset: Int): PlaylistTracks!
+}
+
+type PlaylistTrack {
+  addedAt: String
+  addedBy: UserProfile!
+  isLocal: Boolean!
+  primaryColor: String
+  track: Track!
+}
+
+type PlaylistTracks implements Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  next: Int
+  previous: Int
+  tracks: [PlaylistTrack!]!
+}
+
+type Playlists implements Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  next: Int
+  previous: Int
+  playlists: [Playlist!]!
+}
+
+type Query {
+  playlist(id: ID!, market: String): Playlist
+}

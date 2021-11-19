@@ -1,0 +1,54 @@
+type SearchResponse {
+  tracks: Tracks
+  artists: Artists
+  album: Albums
+}
+
+type Artists implements Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  next: Int
+  previous: Int
+
+  artists: [Artist!]!
+}
+
+type Tracks implements Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  next: Int
+  previous: Int
+
+  tracks: [Track!]!
+}
+
+type Albums implements Pagination {
+  limit: Int!
+  offset: Int!
+  total: Int!
+  next: Int
+  previous: Int
+
+  albums: [Album!]!
+}
+
+type Query {
+  search(
+    query: String!
+    type: [ItemType!]!
+    limit: Int
+    offset: Int
+    market: String
+    includeExternal: Boolean
+  ): SearchResponse
+  searchTracks(query: String!, limit: Int, offset: Int, market: String): Tracks!
+  searchArtists(
+    query: String!
+    limit: Int
+    offset: Int
+    market: String
+  ): Artists!
+  searchAlbums(query: String!, limit: Int, offset: Int, market: String): Albums!
+}
