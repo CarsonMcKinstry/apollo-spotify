@@ -1,4 +1,4 @@
-type SearchResponse {
+type Search {
   tracks: Tracks
   artists: Artists
   album: Albums
@@ -42,7 +42,7 @@ type Query {
     offset: Int
     market: String
     includeExternal: Boolean
-  ): SearchResponse
+  ): Search
   searchTracks(query: String!, limit: Int, offset: Int, market: String): Tracks!
   searchArtists(
     query: String!

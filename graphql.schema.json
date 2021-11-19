@@ -3313,7 +3313,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "SearchResponse",
+              "name": "Search",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3764,7 +3764,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "SearchResponse",
+        "name": "Search",
         "description": null,
         "fields": [
           {

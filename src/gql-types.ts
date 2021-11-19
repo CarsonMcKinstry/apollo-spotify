@@ -326,7 +326,7 @@ export type Query = {
   me: Me;
   newReleases: Albums;
   playlist?: Maybe<Playlist>;
-  search?: Maybe<SearchResponse>;
+  search?: Maybe<Search>;
   searchAlbums: Albums;
   searchArtists: Artists;
   searchTracks: Tracks;
@@ -452,8 +452,8 @@ export type Restrictions = {
   reason: RestrictionReason;
 };
 
-export type SearchResponse = {
-  __typename?: 'SearchResponse';
+export type Search = {
+  __typename?: 'Search';
   album?: Maybe<Albums>;
   artists?: Maybe<Artists>;
   tracks?: Maybe<Tracks>;
@@ -632,7 +632,7 @@ export type ResolversTypes = {
   RelatedArtists: ResolverTypeWrapper<RelatedArtists>;
   RestrictionReason: RestrictionReason;
   Restrictions: ResolverTypeWrapper<Restrictions>;
-  SearchResponse: ResolverTypeWrapper<SearchResponse>;
+  Search: ResolverTypeWrapper<Search>;
   String: ResolverTypeWrapper<Scalars['String']>;
   TimeRange: TimeRange;
   TopTracks: ResolverTypeWrapper<TopTracks>;
@@ -671,7 +671,7 @@ export type ResolversParentTypes = {
   Query: {};
   RelatedArtists: RelatedArtists;
   Restrictions: Restrictions;
-  SearchResponse: SearchResponse;
+  Search: Search;
   String: Scalars['String'];
   TopTracks: TopTracks;
   Track: Track;
@@ -898,7 +898,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   newReleases?: Resolver<ResolversTypes['Albums'], ParentType, ContextType, RequireFields<QueryNewReleasesArgs, never>>;
   playlist?: Resolver<Maybe<ResolversTypes['Playlist']>, ParentType, ContextType, RequireFields<QueryPlaylistArgs, 'id'>>;
-  search?: Resolver<Maybe<ResolversTypes['SearchResponse']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
+  search?: Resolver<Maybe<ResolversTypes['Search']>, ParentType, ContextType, RequireFields<QuerySearchArgs, 'query' | 'type'>>;
   searchAlbums?: Resolver<ResolversTypes['Albums'], ParentType, ContextType, RequireFields<QuerySearchAlbumsArgs, 'query'>>;
   searchArtists?: Resolver<ResolversTypes['Artists'], ParentType, ContextType, RequireFields<QuerySearchArtistsArgs, 'query'>>;
   searchTracks?: Resolver<ResolversTypes['Tracks'], ParentType, ContextType, RequireFields<QuerySearchTracksArgs, 'query'>>;
@@ -917,7 +917,7 @@ export type RestrictionsResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResponse'] = ResolversParentTypes['SearchResponse']> = {
+export type SearchResolvers<ContextType = any, ParentType extends ResolversParentTypes['Search'] = ResolversParentTypes['Search']> = {
   album?: Resolver<Maybe<ResolversTypes['Albums']>, ParentType, ContextType>;
   artists?: Resolver<Maybe<ResolversTypes['Artists']>, ParentType, ContextType>;
   tracks?: Resolver<Maybe<ResolversTypes['Tracks']>, ParentType, ContextType>;
@@ -1008,7 +1008,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   RelatedArtists?: RelatedArtistsResolvers<ContextType>;
   Restrictions?: RestrictionsResolvers<ContextType>;
-  SearchResponse?: SearchResponseResolvers<ContextType>;
+  Search?: SearchResolvers<ContextType>;
   TopTracks?: TopTracksResolvers<ContextType>;
   Track?: TrackResolvers<ContextType>;
   Tracks?: TracksResolvers<ContextType>;
