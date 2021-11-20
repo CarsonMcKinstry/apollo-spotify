@@ -1,8 +1,9 @@
 import "graphql-import-node";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import merge from "lodash.merge";
 
 import { baseTypeDefs } from "./schemas/base";
-import { userTypeDefs } from "./schemas/user";
+import { userResolvers, userTypeDefs } from "./schemas/user";
 import { playlistTypeDefs } from "./schemas/playlist";
 import { searchTypeDefs } from "./schemas/search";
 import { albumTypeDefs } from "./schemas/album";
@@ -19,4 +20,5 @@ export const schema = makeExecutableSchema({
     trackTypeDefs,
     artistTypeDefs,
   ],
+  resolvers: merge(userResolvers),
 });

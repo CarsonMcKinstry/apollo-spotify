@@ -37,8 +37,12 @@ export const isAuthFailure = (response: any): response is AuthFailure => {
 
 /* API Response Types */
 
-type ReCase<Base, Keys extends string, Corrections> = Omit<Base, Keys> &
-  Corrections;
+type ReCase<
+  Base,
+  Keys extends string,
+  Corrections,
+  Omissions extends keyof Base = never
+> = Omit<Omit<Base, Keys> & Corrections, Omissions>;
 
 type CommonReCaseKeys = "externalUrls" | "availableMarkets";
 
@@ -69,7 +73,7 @@ type ArtistsReCaseKeys = CommonReCaseKeys;
 
 type MeReCaseKeys = CommonReCaseKeys | "displayName" | "explicitContent";
 
-type PlaylistReCaseKeys = CommonReCaseKeys | "snapshotId" | "tracks";
+type PlaylistReCaseKeys = CommonReCaseKeys | "snapshot_id" | "tracks";
 
 type AudioFeaturesCaseCorrections = "duration" | "time_signature";
 
@@ -113,9 +117,10 @@ export type MeAPIResponse = ReCase<
   Me,
   MeReCaseKeys,
   {
-    displayName: string;
-    explicitContent?: ExplicitContentSettingsAPIResponse;
-  }
+    display_name: string;
+    explicit_content?: ExplicitContentSettingsAPIResponse;
+  },
+  "topArtists" | "topTracks" | "playlists"
 >;
 
 export type PlaylistAPIResponse = ReCase<

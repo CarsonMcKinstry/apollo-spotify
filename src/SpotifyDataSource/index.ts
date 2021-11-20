@@ -1,6 +1,10 @@
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
+import { MeAPIResponse } from "./types";
+import { Me } from "../gql-types";
 import { SpotifyGraphqlContext } from "../types";
 import { accessToken, authorize, isAuthorized } from "./authorization";
+import { AuthenticationError } from "apollo-server";
+import { mapResponse } from "../utils/mapResponse";
 
 export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   override baseURL = "https://api.spotify.com/v1";
@@ -41,5 +45,24 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
     }
 
     req.headers.set("Authorization", authorizationHeader);
+  }
+
+  private checkAuth() {
+    if (!this.context.spotifyAuthenticationToken) {
+      throw new AuthenticationError("No authorization token provided");
+    }
+  }
+
+  /**
+   * Gets profile for the currently logged in user
+   */
+  async getMe(): Promise<Me> {
+    this.checkAuth();
+    const me = await this.get<MeAPIResponse>("/me");
+
+    return mapResponse<MeAPIResponse, Me>(me, [
+      ["display_name", "displayName"],
+      ["explicit_content", "explicitContent"],
+    ]);
   }
 }

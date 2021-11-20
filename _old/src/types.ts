@@ -97,8 +97,8 @@ interface ExplicitContentSettingsAPIResponse {
 
 export interface MeAPIResponse extends Omit<Me, MeCaseCorrections> {
   external_urls: ExternalUrls;
-  displayName: string;
-  explicitContent?: ExplicitContentSettingsAPIResponse;
+  display_name: string;
+  explicit_content?: ExplicitContentSettingsAPIResponse;
 }
 
 type UserProfileCaseCorrections = "";
