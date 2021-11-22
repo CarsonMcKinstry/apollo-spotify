@@ -11,6 +11,7 @@ import {
   Playlist,
   PlaylistTrack,
   AudioFeatures,
+  UserProfile,
 } from "../gql-types";
 import { Maybe } from "../types";
 
@@ -73,6 +74,8 @@ type ArtistsReCaseKeys = CommonReCaseKeys;
 
 type MeReCaseKeys = CommonReCaseKeys | "displayName" | "explicitContent";
 
+type UserProfileReCaseKeys = CommonReCaseKeys | "displayName";
+
 type PlaylistReCaseKeys = CommonReCaseKeys | "snapshot_id" | "tracks";
 
 type AudioFeaturesCaseCorrections = "duration" | "time_signature";
@@ -117,10 +120,21 @@ export type MeAPIResponse = ReCase<
   Me,
   MeReCaseKeys,
   {
+    external_urls: ExternalUrls;
     display_name: string;
     explicit_content?: ExplicitContentSettingsAPIResponse;
   },
   "topArtists" | "topTracks" | "playlists"
+>;
+
+export type UserProfileAPIResponse = ReCase<
+  UserProfile,
+  UserProfileReCaseKeys,
+  {
+    external_urls: ExternalUrls;
+    display_name: string;
+  },
+  "playlists"
 >;
 
 export type PlaylistAPIResponse = ReCase<

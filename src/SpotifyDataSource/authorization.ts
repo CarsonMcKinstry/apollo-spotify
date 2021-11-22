@@ -7,8 +7,9 @@ import {
 } from "./types";
 import request from "request";
 
-export let accessToken: Maybe<string> = null;
-let accessTokenExpiry: number = Date.now();
+export let accessToken: Maybe<string> =
+  process.env.NODE_ENV === "test" ? "foo" : null;
+let accessTokenExpiry: number = Date.now() + 3600 * 1000;
 
 /**
  * Tells where or not the access token has expired
