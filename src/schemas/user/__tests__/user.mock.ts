@@ -114,7 +114,7 @@ export const userResponseMock = (id: string) => ({
   uri: "string",
 });
 
-export const myTopTracks = (token: string, args: MeTopTracksArgs = {}) =>
+export const myTopTracksMock = (token: string, args: MeTopTracksArgs = {}) =>
   nock(SPOTIFY_API_BASE, {
     reqheaders: {
       Authorization: "Bearer " + token,
@@ -122,9 +122,7 @@ export const myTopTracks = (token: string, args: MeTopTracksArgs = {}) =>
   })
     .get("/me/top/tracks")
     .query(args)
-
     .reply(200, {
-      href: "https://api.spotify.com/v1/me/tracks?offset=0&limit=20\n",
       items: [],
       limit: args.limit ?? 20,
       next: `https://api.spotify.com/v1/me/tracks?offset=${
@@ -132,7 +130,16 @@ export const myTopTracks = (token: string, args: MeTopTracksArgs = {}) =>
       }&limit=${args.limit ?? 1}`,
       offset: args.offset ?? 0,
       previous: `https://api.spotify.com/v1/me/tracks?offset=${
-        args.offset
+        args.offset ?? 1
       }&limit=${args.limit ?? 1}`,
       total: 4,
     });
+
+export const myTopTracksResponseMock = (args: MeTopTracksArgs = {}) => ({
+  tracks: [],
+  limit: args.limit ?? 20,
+  next: args.offset ?? 1,
+  offset: args.offset ?? 0,
+  previous: args.offset ?? 1,
+  total: 4,
+});

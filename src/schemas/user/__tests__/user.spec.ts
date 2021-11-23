@@ -3,6 +3,8 @@ import {
   getUserMock,
   meMock,
   meResponseMock,
+  myTopTracksMock,
+  myTopTracksResponseMock,
   userResponseMock,
 } from "./user.mock";
 
@@ -27,7 +29,36 @@ describe("SpotifyDataSource", () => {
       });
     });
 
-    describe("getUsser", () => {
+    describe("getMyTopTracks", () => {
+      it("should return my top tracks", async () => {
+        myTopTracksMock("foo");
+        const spotify = await createTestDataSource("foo");
+
+        const out = await spotify.getMyTopTracks();
+
+        expect(out).toEqual(myTopTracksResponseMock());
+      });
+
+      it("should return my top tracks with a configured limit", async () => {
+        myTopTracksMock("foo", { limit: 20 });
+        const spotify = await createTestDataSource("foo");
+
+        const out = await spotify.getMyTopTracks({ limit: 20 });
+
+        expect(out).toEqual(myTopTracksResponseMock({ limit: 20 }));
+      });
+
+      it("should return my top tracks with a configured offset", async () => {
+        myTopTracksMock("foo", { offset: 20 });
+        const spotify = await createTestDataSource("foo");
+
+        const out = await spotify.getMyTopTracks({ offset: 20 });
+
+        expect(out).toEqual(myTopTracksResponseMock({ offset: 20 }));
+      });
+    });
+
+    describe("getUser", () => {
       it("should return a user if an id is given", async () => {
         getUserMock("foo");
         const spotify = await createTestDataSource();

@@ -1,11 +1,17 @@
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
-import { MeAPIResponse, UserProfileAPIResponse } from "./types";
+import {
+  APIPaginationResponse,
+  MeAPIResponse,
+  UserProfileAPIResponse,
+} from "./types";
 import { Me, MeTopTracksArgs, Tracks, UserProfile } from "../gql-types";
 import { SpotifyGraphqlContext } from "../types";
 import { accessToken, authorize, isAuthorized } from "./authorization";
 import { AuthenticationError } from "apollo-server";
 import { mapResponse } from "../utils/mapResponse";
 import { SPOTIFY_API_BASE } from "./constants";
+import { omitNil } from "../utils/omitNil";
+import { configurePagination } from "../utils/configurePagination";
 
 export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   override baseURL = SPOTIFY_API_BASE;
@@ -78,7 +84,16 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
     };
   }
 
-  async getMyTopTracks(args: MeTopTracksArgs = {}): Promise<Tracks> {}
+  async getMyTopTracks(args: MeTopTracksArgs = {}): Promise<Tracks> {
+    const topTracks = await this.get<APIPaginationResponse<Tracks>>(
+      "/me/top/tracks",
+      omitNil(args)
+    );
+
+    const tracks = configurePagination(topTracks);
+
+    return mapResponse<typeof tracks, Tracks>(tracks, [["items", "tracks"]]);
+  }
 
   async getUser(id: string): Promise<UserProfile> {
     const isSpotify = id === "";
