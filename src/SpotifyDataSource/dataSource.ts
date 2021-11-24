@@ -10,6 +10,11 @@ import {
   MeTopArtistsArgs,
   QueryTrackArgs,
   QueryTracksArgs,
+  QueryArtistsArgs,
+  ArtistAlbumsArgs,
+  Albums,
+  Playlist,
+  ArtistTopTracksArgs,
 } from "./../gql-types";
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
 import {
@@ -18,6 +23,7 @@ import {
   ArtistAPIResponse,
   AudioFeaturesAPIResponse,
   MeAPIResponse,
+  PlaylistAPIResponse,
   TrackAPIResponse,
   UserProfileAPIResponse,
 } from "./types";
@@ -105,42 +111,52 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
 
   public async getMyTopTracks(args: MeTopTracksArgs = {}): Promise<Tracks> {
     this.checkAuth();
-    const topTracks = await this.get<APIPaginationResponse<Tracks>>(
+    const topTracks = await this.get<APIPaginationResponse<TrackAPIResponse>>(
       "/me/top/tracks",
       omitNil(args)
     );
 
-    const tracks = configurePagination(topTracks);
+    const tracksPagination = configurePagination(topTracks);
 
-    return mapResponse<typeof tracks, Tracks>(tracks, [["items", "tracks"]]);
+    const { items, ...rest } = tracksPagination;
+
+    return {
+      ...rest,
+      tracks: items.map((item) => this.mapTrack(item)),
+    };
   }
 
   public async getMyTopArtists(args: MeTopArtistsArgs = {}): Promise<Artists> {
     this.checkAuth();
-    const topArtists = await this.get<APIPaginationResponse<Artists>>(
+    const topArtists = await this.get<APIPaginationResponse<ArtistAPIResponse>>(
       "/me/top/artists",
       omitNil(args)
     );
 
-    const artists = configurePagination(topArtists);
+    const topTrackPagination = configurePagination(topArtists);
 
-    return mapResponse<typeof artists, Artists>(artists, [
-      ["items", "artists"],
-    ]);
+    const { items, ...rest } = topTrackPagination;
+
+    return {
+      ...rest,
+      artists: items.map((item) => this.mapArtist(item)),
+    };
   }
 
   public async getMyPlaylists(args: MePlaylistsArgs = {}): Promise<Playlists> {
     this.checkAuth();
-    const playlistsResponse = await this.get<APIPaginationResponse<Playlists>>(
-      "/me/playlists",
-      omitNil(args)
-    );
+    const playlistsResponse = await this.get<
+      APIPaginationResponse<PlaylistAPIResponse>
+    >("/me/playlists", omitNil(args));
 
     const playlists = configurePagination(playlistsResponse);
 
-    return mapResponse<typeof playlists, Playlists>(playlists, [
-      ["items", "playlists"],
-    ]);
+    const { items, ...rest } = playlists;
+
+    return {
+      ...rest,
+      playlists: items.map((item) => this.mapPlaylist(item)),
+    };
   }
 
   public async getUser(id: string): Promise<UserProfile> {
@@ -250,7 +266,71 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
       ["external_urls", "externalUrls"],
     ]);
   }
+
+  public async getArtist(id: string): Promise<Artist> {
+    const artist = await this.get<ArtistAPIResponse>(`/artists/${id}`);
+
+    return this.mapArtist(artist);
+  }
+
+  public async getArtists(
+    ids: string[],
+    args: Omit<QueryArtistsArgs, "ids"> = {}
+  ): Promise<Artist[]> {
+    const { artists } = await this.get<{ artists: ArtistAPIResponse[] }>(
+      "/artists",
+      {
+        ids,
+        ...omitNil(args),
+      }
+    );
+
+    return artists.map((artist) => this.mapArtist(artist));
+  }
+
+  public async getRelatedArtists(id: string): Promise<Artist[]> {
+    const { artists } = await this.get<{ artists: ArtistAPIResponse[] }>(
+      `/artists/${id}/related-artists`
+    );
+
+    return artists.map((artist) => this.mapArtist(artist));
+  }
+
+  public async getAlbumsByArtist(
+    id: string,
+    args: ArtistAlbumsArgs = {}
+  ): Promise<Albums> {
+    const artistAlbums = await this.get<
+      APIPaginationResponse<AlbumAPIResponse>
+    >(`/artists/${id}/albums`, omitNil(args));
+
+    const albums = configurePagination(artistAlbums);
+
+    const { items, ...rest } = albums;
+
+    return {
+      ...rest,
+      albums: items.map((item) => this.mapAlbum(item)),
+    };
+  }
+
+  public async getTopTracksByArtist(
+    id: string,
+    args: ArtistTopTracksArgs
+  ): Promise<Track[]> {
+    const { tracks } = await this.get<{ tracks: TrackAPIResponse[] }>(
+      `/artists/${id}/top-tracks`,
+      omitNil(args)
+    );
+
+    return tracks.map((track) => this.mapTrack(track));
+  }
+
   /* ======================== PLAYLISTS ========================= */
+
+  private mapPlaylist(playlist: PlaylistAPIResponse): Playlist {
+    return mapResponse(playlist, [["snapshot_id", "snapshotId"]]);
+  }
 
   public async getPlaylistsByUser(
     id: string,
