@@ -1,5 +1,10 @@
 import nock from "nock";
-import { MeTopTracksArgs } from "../../../gql-types";
+import { UserProfilePlaylistsArgs } from "../../../../_old/src/gql-types";
+import {
+  MePlaylistsArgs,
+  MeTopArtistsArgs,
+  MeTopTracksArgs,
+} from "../../../gql-types";
 import { SPOTIFY_API_BASE } from "../../../SpotifyDataSource/constants";
 
 export const meMock = (token: string) =>
@@ -137,6 +142,97 @@ export const myTopTracksMock = (token: string, args: MeTopTracksArgs = {}) =>
 
 export const myTopTracksResponseMock = (args: MeTopTracksArgs = {}) => ({
   tracks: [],
+  limit: args.limit ?? 20,
+  next: args.offset ?? 1,
+  offset: args.offset ?? 0,
+  previous: args.offset ?? 1,
+  total: 4,
+});
+
+export const myTopArtistsMock = (token: string, args: MeTopArtistsArgs = {}) =>
+  nock(SPOTIFY_API_BASE, {
+    reqheaders: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .get("/me/top/artists")
+    .query(args)
+    .reply(200, {
+      items: [],
+      limit: args.limit ?? 20,
+      next: `https://api.spotify.com/v1/me/artists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      offset: args.offset ?? 0,
+      previous: `https://api.spotify.com/v1/me/artists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      total: 4,
+    });
+
+export const myTopArtistsResponseMock = (args: MeTopArtistsArgs = {}) => ({
+  artists: [],
+  limit: args.limit ?? 20,
+  next: args.offset ?? 1,
+  offset: args.offset ?? 0,
+  previous: args.offset ?? 1,
+  total: 4,
+});
+
+export const myPlaylistsMock = (token: string, args: MePlaylistsArgs = {}) =>
+  nock(SPOTIFY_API_BASE, {
+    reqheaders: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .get("/me/playlists")
+    .query(args)
+    .reply(200, {
+      items: [],
+      limit: args.limit ?? 20,
+      next: `https://api.spotify.com/v1/me/playlists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      offset: args.offset ?? 0,
+      previous: `https://api.spotify.com/v1/me/playlists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      total: 4,
+    });
+
+export const myPlaylistsResponsemock = (args: MePlaylistsArgs = {}) => ({
+  playlists: [],
+  limit: args.limit ?? 20,
+  next: args.offset ?? 1,
+  offset: args.offset ?? 0,
+  previous: args.offset ?? 1,
+  total: 4,
+});
+
+export const userPlaylistMock = (
+  id: string,
+  args: UserProfilePlaylistsArgs = {}
+) =>
+  nock(SPOTIFY_API_BASE)
+    .get(`/users/${id}/playlists`)
+    .query(args)
+    .reply(200, {
+      items: [],
+      limit: args.limit ?? 20,
+      next: `https://api.spotify.com/v1/me/playlists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      offset: args.offset ?? 0,
+      previous: `https://api.spotify.com/v1/me/playlists?offset=${
+        args.offset ?? 1
+      }&limit=${args.limit ?? 1}`,
+      total: 4,
+    });
+
+export const userPlaylistResponseMock = (
+  args: UserProfilePlaylistsArgs = {}
+) => ({
+  playlists: [],
   limit: args.limit ?? 20,
   next: args.offset ?? 1,
   offset: args.offset ?? 0,

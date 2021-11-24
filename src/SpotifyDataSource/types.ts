@@ -38,12 +38,8 @@ export const isAuthFailure = (response: any): response is AuthFailure => {
 
 /* API Response Types */
 
-type ReCase<
-  Base,
-  Keys extends string,
-  Corrections,
-  Omissions extends keyof Base = never
-> = Omit<Omit<Base, Keys> & Corrections, Omissions>;
+type ReCase<Base, Keys extends string, Corrections> = Omit<Base, Keys> &
+  Corrections;
 
 type CommonReCaseKeys = "externalUrls" | "availableMarkets";
 
@@ -68,7 +64,9 @@ type TrackReCaseKeys =
   | "externalIds"
   | "isPlayable"
   | "isLocal"
-  | "linkedFrom";
+  | "linkedFrom"
+  | "album"
+  | "artists";
 
 type ArtistsReCaseKeys = CommonReCaseKeys;
 
@@ -76,22 +74,28 @@ type MeReCaseKeys = CommonReCaseKeys | "displayName" | "explicitContent";
 
 type UserProfileReCaseKeys = CommonReCaseKeys | "displayName";
 
-type PlaylistReCaseKeys = CommonReCaseKeys | "snapshot_id" | "tracks";
+type PlaylistReCaseKeys = CommonReCaseKeys | "snapshotId" | "tracks";
 
-type AudioFeaturesCaseCorrections = "duration" | "time_signature";
+type AudioFeaturesCaseCorrections = "duration" | "timeSignature";
 
-export type ArtistAPIResponse = ReCase<Artist, ArtistsReCaseKeys, {}>;
+export type ArtistAPIResponse = ReCase<
+  Artist,
+  ArtistsReCaseKeys,
+  {
+    external_urls: ExternalUrls;
+  }
+>;
 
 export type AlbumAPIResponse = ReCase<
   Album,
   AlbumReCaseKeys,
   {
+    external_urls: ExternalUrls;
     album_type: AlbumType;
     available_markets?: string[];
     release_date: string;
     release_date_precision: DatePrecision;
     total_tracks: number;
-    [key: string]: any;
   }
 >;
 
@@ -105,10 +109,12 @@ export type TrackAPIResponse = ReCase<
     track_number: number;
     preview_url: string;
     external_ids: ExternalIds;
+    external_urls: ExternalUrls;
     is_playable: boolean;
     is_local: boolean;
     linked_from: LinkedFrom;
-    [key: string]: any;
+    album: AlbumAPIResponse;
+    artists: ArtistAPIResponse[];
   }
 >;
 interface ExplicitContentSettingsAPIResponse {
@@ -123,8 +129,7 @@ export type MeAPIResponse = ReCase<
     external_urls: ExternalUrls;
     display_name: string;
     explicit_content?: ExplicitContentSettingsAPIResponse;
-  },
-  "topArtists" | "topTracks" | "playlists"
+  }
 >;
 
 export type UserProfileAPIResponse = ReCase<
@@ -133,8 +138,7 @@ export type UserProfileAPIResponse = ReCase<
   {
     external_urls: ExternalUrls;
     display_name: string;
-  },
-  "playlists"
+  }
 >;
 
 export type PlaylistAPIResponse = ReCase<

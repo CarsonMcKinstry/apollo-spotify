@@ -480,11 +480,13 @@ export type Track = Item & {
   duration: Scalars['Int'];
   explicit: Scalars['Boolean'];
   externalIds: ExternalIds;
+  externalUrls: ExternalUrls;
   id: Scalars['ID'];
   isLocal: Scalars['Boolean'];
   isPlayable?: Maybe<Scalars['Boolean']>;
   linkedFrom?: Maybe<LinkedFrom>;
   name: Scalars['String'];
+  popularity: Scalars['Int'];
   previewUrl?: Maybe<Scalars['String']>;
   restrictions?: Maybe<Restrictions>;
   trackNumber: Scalars['Int'];
@@ -938,11 +940,13 @@ export type TrackResolvers<ContextType = any, ParentType extends ResolversParent
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   explicit?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   externalIds?: Resolver<ResolversTypes['ExternalIds'], ParentType, ContextType>;
+  externalUrls?: Resolver<ResolversTypes['ExternalUrls'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isLocal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isPlayable?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   linkedFrom?: Resolver<Maybe<ResolversTypes['LinkedFrom']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  popularity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   previewUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   restrictions?: Resolver<Maybe<ResolversTypes['Restrictions']>, ParentType, ContextType>;
   trackNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

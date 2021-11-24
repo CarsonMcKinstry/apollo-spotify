@@ -11,6 +11,7 @@ type Track implements Item {
   trackNumber: Int!
   duration: Int!
   explicit: Boolean!
+  popularity: Int!
 
   restrictions: Restrictions
 
@@ -18,6 +19,7 @@ type Track implements Item {
   previewUrl: String
 
   externalIds: ExternalIds!
+  externalUrls: ExternalUrls!
   linkedFrom: LinkedFrom
   isPlayable: Boolean
   isLocal: Boolean!
