@@ -17,6 +17,10 @@ import {
   ArtistTopTracksArgs,
   QueryPlaylistArgs,
   PlaylistTracksArgs,
+  QueryAlbumArgs,
+  QueryAlbumsArgs,
+  AlbumTracksArgs,
+  QueryNewReleasesArgs,
 } from "./../gql-types";
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
 import {
@@ -247,7 +251,7 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   /* ========================== ALBUMS ========================== */
 
   private mapAlbum(album: AlbumAPIResponse): Album {
-    const { artists, ...rest } = mapResponse<
+    const { artists = [], ...rest } = mapResponse<
       AlbumAPIResponse,
       Omit<Album, "artists"> & { artists: ArtistAPIResponse[] }
     >(album, [
@@ -262,6 +266,66 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
     return {
       ...rest,
       artists: artists.map((artist) => this.mapArtist(artist)),
+    };
+  }
+
+  public async getAlbum(
+    id: string,
+    args: Omit<QueryAlbumArgs, "id"> = {}
+  ): Promise<Album> {
+    const album = await this.get<AlbumAPIResponse>(
+      `/albums/${id}`,
+      omitNil(args)
+    );
+
+    return this.mapAlbum(album);
+  }
+
+  public async getAlbums(
+    ids: string[],
+    args: Omit<QueryAlbumsArgs, "ids"> = {}
+  ): Promise<Album[]> {
+    const { albums } = await this.get<{ albums: AlbumAPIResponse[] }>(
+      "/albums",
+      {
+        ids,
+        ...omitNil(args),
+      }
+    );
+
+    return albums.map((album) => this.mapAlbum(album));
+  }
+
+  public async getTracksForAlbum(
+    id: string,
+    args: AlbumTracksArgs = {}
+  ): Promise<Tracks> {
+    const tracksForAlbum = await this.get<
+      APIPaginationResponse<TrackAPIResponse>
+    >(`/albums/${id}/tracks`, omitNil(args));
+
+    const tracks = configurePagination(tracksForAlbum);
+
+    const { items, ...rest } = tracks;
+
+    return {
+      ...rest,
+      tracks: items.map((item) => this.mapTrack(item)),
+    };
+  }
+
+  public async getNewReleases(args: QueryNewReleasesArgs): Promise<Albums> {
+    const { albums } = await this.get<{
+      albums: APIPaginationResponse<AlbumAPIResponse>;
+    }>("/browse/new-releases", omitNil(args));
+
+    const newReleases = configurePagination(albums);
+
+    const { items, ...rest } = newReleases;
+
+    return {
+      ...rest,
+      albums: items.map((album) => this.mapAlbum(album)),
     };
   }
 
