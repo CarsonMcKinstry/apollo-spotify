@@ -137,12 +137,12 @@ type Category {
   icons: [Image!]!
 }
 
-type CategoryPage implements Pagination {
+type Categories implements Pagination {
   categories: [Category!]!
   limit: Int!
   offset: Int!
-  next: Int!
-  previous: Int!
+  next: Int
+  previous: Int
   total: Int!
 }
 
@@ -153,7 +153,7 @@ type Query {
     offset: Int
     country: String
     locale: String
-  ): CategoryPage!
+  ): Categories!
   genres: [String!]!
   markets: [String!]!
 }

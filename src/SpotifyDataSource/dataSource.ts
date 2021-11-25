@@ -21,6 +21,11 @@ import {
   QueryAlbumsArgs,
   AlbumTracksArgs,
   QueryNewReleasesArgs,
+  QueryCategoryArgs,
+  Category,
+  QueryCategoriesArgs,
+  Categories,
+  Pagination,
 } from "./../gql-types";
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
 import {
@@ -462,4 +467,43 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   }
 
   /* ========================= SEARCH =========================== */
+
+  /* ========================== BASE ============================ */
+
+  public async getGenres(): Promise<string[]> {
+    const { genres } = await this.get<{ genres: string[] }>(
+      "/recommendations/available-genre-seeds"
+    );
+
+    return genres;
+  }
+
+  public async getMarkets(): Promise<string[]> {
+    const { markets } = await this.get<{ markets: string[] }>("/markets");
+
+    return markets;
+  }
+
+  public async getCategory(
+    id: string,
+    args: Omit<QueryCategoryArgs, "id"> = {}
+  ): Promise<Category> {
+    return this.get(`/browse/categories/${id}`, omitNil(args));
+  }
+
+  public async getCategories(
+    args: QueryCategoriesArgs = {}
+  ): Promise<Categories> {
+    const categories = await this.get<APIPaginationResponse<Category>>(
+      "/browse/categories",
+      omitNil(args)
+    );
+
+    const { items, ...rest } = configurePagination(categories);
+
+    return {
+      ...rest,
+      categories: items,
+    };
+  }
 }
