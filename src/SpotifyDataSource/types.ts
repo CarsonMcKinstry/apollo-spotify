@@ -74,7 +74,7 @@ type MeReCaseKeys = CommonReCaseKeys | "displayName" | "explicitContent";
 
 type UserProfileReCaseKeys = CommonReCaseKeys | "displayName";
 
-type PlaylistReCaseKeys = CommonReCaseKeys | "snapshotId" | "tracks";
+type PlaylistReCaseKeys = CommonReCaseKeys | "snapshotId" | "tracks" | "owner";
 
 type AudioFeaturesCaseCorrections = "duration" | "timeSignature";
 
@@ -145,8 +145,10 @@ export type PlaylistAPIResponse = ReCase<
   Playlist,
   PlaylistReCaseKeys,
   {
+    external_urls: ExternalUrls;
     snapshot_id: string;
-    tracks: APIPaginationResponse<PlaylistTrack>;
+    owner: UserProfileAPIResponse;
+    // tracks: APIPaginationResponse<TrackAPIResponse>;
   }
 >;
 
