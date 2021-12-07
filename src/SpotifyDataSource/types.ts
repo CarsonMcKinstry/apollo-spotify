@@ -75,6 +75,12 @@ type MeReCaseKeys = CommonReCaseKeys | "displayName" | "explicitContent";
 type UserProfileReCaseKeys = CommonReCaseKeys | "displayName";
 
 type PlaylistReCaseKeys = CommonReCaseKeys | "snapshotId" | "tracks" | "owner";
+type PlaylistTrackReCaseKeys =
+  | CommonReCaseKeys
+  | "addedAt"
+  | "addedBy"
+  | "isLocal"
+  | "primaryColor";
 
 type AudioFeaturesCaseCorrections = "duration" | "timeSignature";
 
@@ -113,8 +119,20 @@ export type TrackAPIResponse = ReCase<
     is_playable: boolean;
     is_local: boolean;
     linked_from: LinkedFrom;
-    album: AlbumAPIResponse;
+    album?: AlbumAPIResponse;
     artists: ArtistAPIResponse[];
+  }
+>;
+
+export type PlaylistTrackAPIResponse = ReCase<
+  PlaylistTrack,
+  PlaylistTrackReCaseKeys,
+  {
+    added_at: Maybe<string>;
+    added_by: UserProfileAPIResponse;
+    is_local: boolean;
+    primary_color: Maybe<string>;
+    track: TrackAPIResponse;
   }
 >;
 interface ExplicitContentSettingsAPIResponse {

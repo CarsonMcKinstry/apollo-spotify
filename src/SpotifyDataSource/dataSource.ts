@@ -35,6 +35,7 @@ import {
   ItemType,
   QuerySearchAlbumsArgs,
   QuerySearchArtistsArgs,
+  PlaylistTracks,
 } from "./../gql-types";
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
 import {
@@ -45,6 +46,7 @@ import {
   FullSearchResponse,
   MeAPIResponse,
   PlaylistAPIResponse,
+  PlaylistTrackAPIResponse,
   TrackAPIResponse,
   UserProfileAPIResponse,
 } from "./types";
@@ -202,8 +204,8 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
     const { album, artists, ...rest } = mapResponse<
       TrackAPIResponse,
       Omit<Track, "album" | "artists"> & {
-        album: AlbumAPIResponse;
-        artists: ArtistAPIResponse[];
+        album?: AlbumAPIResponse;
+        artists?: ArtistAPIResponse[];
       }
     >(track, [
       ["external_urls", "externalUrls"],
@@ -219,8 +221,8 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
 
     return {
       ...rest,
-      album: this.mapAlbum(album),
-      artists: artists.map((artist) => this.mapArtist(artist)),
+      album: album ? this.mapAlbum(album) : null!,
+      artists: artists ? artists.map((artist) => this.mapArtist(artist)) : [],
     };
   }
 
@@ -441,22 +443,44 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
     return this.mapPlaylist(playlist);
   }
 
-  public async getTracksForPlaylist(
-    id: string,
-    args: Omit<PlaylistTracksArgs, "id">
-  ): Promise<Tracks> {
-    const playlistTracks = await this.get<
-      APIPaginationResponse<TrackAPIResponse>
-    >(`/playlists/${id}/tracks`, omitNil(args));
-
-    const tracks = configurePagination(playlistTracks);
+  public mapTracksForPlaylist(
+    response: APIPaginationResponse<PlaylistTrackAPIResponse>
+  ): PlaylistTracks {
+    const tracks = configurePagination(response);
 
     const { items, ...rest } = tracks;
 
     return {
       ...rest,
-      tracks: items.map((track) => this.mapTrack(track)),
+      tracks: items.map((playlistTrack) => {
+        const {
+          track,
+          added_at: addedAt,
+          added_by: addedBy,
+          is_local: isLocal,
+          primary_color: primaryColor,
+        } = playlistTrack;
+
+        return {
+          addedAt,
+          addedBy: this.mapUserProfile(addedBy),
+          isLocal,
+          primaryColor,
+          track: this.mapTrack(track),
+        };
+      }),
     };
+  }
+
+  public async getTracksForPlaylist(
+    id: string,
+    args: Omit<PlaylistTracksArgs, "id">
+  ): Promise<PlaylistTracks> {
+    const playlistTracks = await this.get<
+      APIPaginationResponse<PlaylistTrackAPIResponse>
+    >(`/playlists/${id}/tracks`, omitNil(args));
+
+    return this.mapTracksForPlaylist(playlistTracks);
   }
 
   public async getPlaylistsByUser(
@@ -477,7 +501,10 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
 
   /* ========================= SEARCH =========================== */
 
-  public async search(query: string, args: Omit<QuerySearchArgs, "query">) {
+  public async search(
+    query: string,
+    args: Omit<QuerySearchArgs, "query">
+  ): Promise<Search> {
     const {
       albums: rawAlbums,
       artists: rawArtists,
@@ -529,11 +556,15 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   public async searchTracks(
     query: string,
     args: Omit<QuerySearchTracksArgs, "query"> = {}
-  ) {
+  ): Promise<Tracks> {
     const { tracks } = await this.search(query, {
       ...args,
       type: [ItemType.Track],
     });
+
+    if (!tracks) {
+      throw new Error(`404: Unable to find tracks for: ${query}`);
+    }
 
     return tracks;
   }
@@ -541,11 +572,15 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   public async searchAlbums(
     query: string,
     args: Omit<QuerySearchAlbumsArgs, "query"> = {}
-  ) {
+  ): Promise<Albums> {
     const { albums } = await this.search(query, {
       ...args,
       type: [ItemType.Album],
     });
+
+    if (!albums) {
+      throw new Error(`404: Unable to find albums for: ${query}`);
+    }
 
     return albums;
   }
@@ -553,11 +588,15 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   public async searchArtists(
     query: string,
     args: Omit<QuerySearchArtistsArgs, "query"> = {}
-  ) {
+  ): Promise<Artists> {
     const { artists } = await this.search(query, {
       ...args,
       type: [ItemType.Artist],
     });
+
+    if (!artists) {
+      throw new Error(`404: Unable to find artists for: ${query}`);
+    }
 
     return artists;
   }
@@ -588,10 +627,9 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   public async getCategories(
     args: QueryCategoriesArgs = {}
   ): Promise<Categories> {
-    const categories = await this.get<APIPaginationResponse<Category>>(
-      "/browse/categories",
-      omitNil(args)
-    );
+    const { categories } = await this.get<{
+      categories: APIPaginationResponse<Category>;
+    }>("/browse/categories", omitNil(args));
 
     const { items, ...rest } = configurePagination(categories);
 

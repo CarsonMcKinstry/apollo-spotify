@@ -315,11 +315,11 @@ export type Playlists = Pagination & {
 
 export type Query = {
   __typename?: 'Query';
-  album: Album;
+  album?: Maybe<Album>;
   albums: Array<Album>;
   artist?: Maybe<Artist>;
   artists: Array<Artist>;
-  categories: Categories;
+  categories?: Maybe<Categories>;
   category?: Maybe<Category>;
   genres: Array<Scalars['String']>;
   markets: Array<Scalars['String']>;
@@ -330,7 +330,7 @@ export type Query = {
   searchAlbums: Albums;
   searchArtists: Artists;
   searchTracks: Tracks;
-  track: Track;
+  track?: Maybe<Track>;
   tracks: Array<Track>;
   user: UserProfile;
 };
@@ -889,11 +889,11 @@ export type PlaylistsResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  album?: Resolver<ResolversTypes['Album'], ParentType, ContextType, RequireFields<QueryAlbumArgs, 'id'>>;
+  album?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumArgs, 'id'>>;
   albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumsArgs, 'ids'>>;
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistArgs, 'id'>>;
   artists?: Resolver<Array<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<QueryArtistsArgs, 'ids'>>;
-  categories?: Resolver<ResolversTypes['Categories'], ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
+  categories?: Resolver<Maybe<ResolversTypes['Categories']>, ParentType, ContextType, RequireFields<QueryCategoriesArgs, never>>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
   genres?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   markets?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
@@ -904,7 +904,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   searchAlbums?: Resolver<ResolversTypes['Albums'], ParentType, ContextType, RequireFields<QuerySearchAlbumsArgs, 'query'>>;
   searchArtists?: Resolver<ResolversTypes['Artists'], ParentType, ContextType, RequireFields<QuerySearchArtistsArgs, 'query'>>;
   searchTracks?: Resolver<ResolversTypes['Tracks'], ParentType, ContextType, RequireFields<QuerySearchTracksArgs, 'query'>>;
-  track?: Resolver<ResolversTypes['Track'], ParentType, ContextType, RequireFields<QueryTrackArgs, 'id'>>;
+  track?: Resolver<Maybe<ResolversTypes['Track']>, ParentType, ContextType, RequireFields<QueryTrackArgs, 'id'>>;
   tracks?: Resolver<Array<ResolversTypes['Track']>, ParentType, ContextType, RequireFields<QueryTracksArgs, 'ids'>>;
   user?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>;
 };

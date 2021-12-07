@@ -20,7 +20,7 @@ type Album implements Item {
 }
 
 type Query {
-  album(id: ID!, market: String): Album!
+  album(id: ID!, market: String): Album
   albums(ids: [ID!]!, market: String): [Album!]!
   newReleases(country: String, limit: Int, offset: Int): Albums!
 }

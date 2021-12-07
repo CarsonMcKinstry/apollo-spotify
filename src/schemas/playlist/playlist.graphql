@@ -2,7 +2,7 @@ type Playlist {
   id: ID!
   type: ObjectType!
   uri: String!
-  externalUrls: ExternalUrls!
+  externalUrls: ExternalUrls
   collaborative: Boolean!
   description: String!
   followers: Followers!

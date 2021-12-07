@@ -58,28 +58,30 @@ export const getCategoriesMock = (
     .get("/browse/categories")
     .query(omitNil(args))
     .reply(200, {
-      items: [
-        {
-          icons: [
-            {
-              url: "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n",
-              height: 300,
-              width: 300,
-            },
-          ],
-          id,
-          name: "EQUAL",
-        },
-      ],
-      limit: args.limit ?? 20,
-      next: `https://api.spotify.com/v1/me/artists?offset=${
-        args.offset ?? 1
-      }&limit=${args.limit ?? 1}`,
-      offset: args.offset ?? 0,
-      previous: `https://api.spotify.com/v1/me/artists?offset=${
-        args.offset ?? 1
-      }&limit=${args.limit ?? 1}`,
-      total: 4,
+      categories: {
+        items: [
+          {
+            icons: [
+              {
+                url: "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n",
+                height: 300,
+                width: 300,
+              },
+            ],
+            id,
+            name: "EQUAL",
+          },
+        ],
+        limit: args.limit ?? 20,
+        next: `https://api.spotify.com/v1/me/artists?offset=${
+          args.offset ?? 1
+        }&limit=${args.limit ?? 1}`,
+        offset: args.offset ?? 0,
+        previous: `https://api.spotify.com/v1/me/artists?offset=${
+          args.offset ?? 1
+        }&limit=${args.limit ?? 1}`,
+        total: 4,
+      },
     });
 
 export const getCategoriesResponseMock = (

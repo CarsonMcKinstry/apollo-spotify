@@ -44,6 +44,6 @@ type AudioFeatures {
 }
 
 type Query {
-  track(id: ID!, market: String): Track!
+  track(id: ID!, market: String): Track
   tracks(ids: [ID!]!, market: String): [Track!]!
 }
