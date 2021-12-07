@@ -1,7 +1,7 @@
 type Search {
   tracks: Tracks
   artists: Artists
-  album: Albums
+  albums: Albums
 }
 
 type Artists implements Pagination {

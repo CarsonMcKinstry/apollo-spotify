@@ -3760,7 +3760,7 @@
         "description": null,
         "fields": [
           {
-            "name": "album",
+            "name": "albums",
             "description": null,
             "args": [],
             "type": {

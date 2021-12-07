@@ -25,7 +25,16 @@ import {
   Category,
   QueryCategoriesArgs,
   Categories,
-  Pagination,
+  Me,
+  MeTopTracksArgs,
+  Tracks,
+  UserProfile,
+  QuerySearchArgs,
+  Search,
+  QuerySearchTracksArgs,
+  ItemType,
+  QuerySearchAlbumsArgs,
+  QuerySearchArtistsArgs,
 } from "./../gql-types";
 import { RequestOptions, RESTDataSource } from "apollo-datasource-rest";
 import {
@@ -33,12 +42,12 @@ import {
   APIPaginationResponse,
   ArtistAPIResponse,
   AudioFeaturesAPIResponse,
+  FullSearchResponse,
   MeAPIResponse,
   PlaylistAPIResponse,
   TrackAPIResponse,
   UserProfileAPIResponse,
 } from "./types";
-import { Me, MeTopTracksArgs, Tracks, UserProfile } from "../gql-types";
 import { SpotifyGraphqlContext } from "../types";
 import { accessToken, authorize, isAuthorized } from "./authorization";
 import { AuthenticationError } from "apollo-server";
@@ -467,6 +476,91 @@ export class SpotifyDataSource extends RESTDataSource<SpotifyGraphqlContext> {
   }
 
   /* ========================= SEARCH =========================== */
+
+  public async search(query: string, args: Omit<QuerySearchArgs, "query">) {
+    const {
+      albums: rawAlbums,
+      artists: rawArtists,
+      tracks: rawTracks,
+    } = await this.get<FullSearchResponse>(
+      "/search",
+      omitNil({
+        q: query,
+        ...args,
+      })
+    );
+
+    const albums = rawAlbums ? configurePagination(rawAlbums) : null;
+    const artists = rawArtists ? configurePagination(rawArtists) : null;
+    const tracks = rawTracks ? configurePagination(rawTracks) : null;
+
+    const out: Search = {};
+
+    if (albums) {
+      const { items, ...rest } = albums;
+
+      out.albums = {
+        ...rest,
+        albums: items.map((album) => this.mapAlbum(album)),
+      };
+    }
+
+    if (artists) {
+      const { items, ...rest } = artists;
+
+      out.artists = {
+        ...rest,
+        artists: items.map((artist) => this.mapArtist(artist)),
+      };
+    }
+
+    if (tracks) {
+      const { items, ...rest } = tracks;
+
+      out.tracks = {
+        ...rest,
+        tracks: items.map((track) => this.mapTrack(track)),
+      };
+    }
+
+    return out;
+  }
+
+  public async searchTracks(
+    query: string,
+    args: Omit<QuerySearchTracksArgs, "query"> = {}
+  ) {
+    const { tracks } = await this.search(query, {
+      ...args,
+      type: [ItemType.Track],
+    });
+
+    return tracks;
+  }
+
+  public async searchAlbums(
+    query: string,
+    args: Omit<QuerySearchAlbumsArgs, "query"> = {}
+  ) {
+    const { albums } = await this.search(query, {
+      ...args,
+      type: [ItemType.Album],
+    });
+
+    return albums;
+  }
+
+  public async searchArtists(
+    query: string,
+    args: Omit<QuerySearchArtistsArgs, "query"> = {}
+  ) {
+    const { artists } = await this.search(query, {
+      ...args,
+      type: [ItemType.Artist],
+    });
+
+    return artists;
+  }
 
   /* ========================== BASE ============================ */
 

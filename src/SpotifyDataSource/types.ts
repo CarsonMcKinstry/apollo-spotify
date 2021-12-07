@@ -148,7 +148,6 @@ export type PlaylistAPIResponse = ReCase<
     external_urls: ExternalUrls;
     snapshot_id: string;
     owner: UserProfileAPIResponse;
-    // tracks: APIPaginationResponse<TrackAPIResponse>;
   }
 >;
 

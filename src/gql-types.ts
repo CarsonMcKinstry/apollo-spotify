@@ -454,7 +454,7 @@ export type Restrictions = {
 
 export type Search = {
   __typename?: 'Search';
-  album?: Maybe<Albums>;
+  albums?: Maybe<Albums>;
   artists?: Maybe<Artists>;
   tracks?: Maybe<Tracks>;
 };
@@ -920,7 +920,7 @@ export type RestrictionsResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type SearchResolvers<ContextType = any, ParentType extends ResolversParentTypes['Search'] = ResolversParentTypes['Search']> = {
-  album?: Resolver<Maybe<ResolversTypes['Albums']>, ParentType, ContextType>;
+  albums?: Resolver<Maybe<ResolversTypes['Albums']>, ParentType, ContextType>;
   artists?: Resolver<Maybe<ResolversTypes['Artists']>, ParentType, ContextType>;
   tracks?: Resolver<Maybe<ResolversTypes['Tracks']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
