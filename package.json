@@ -36,6 +36,8 @@
   "scripts": {
     "build": "tsc",
     "generate:types": "graphql-codegen --config codegen.yml",
-    "test": "jest"
+    "test": "jest",
+    "example": "ts-node ./example",
+    "example:watch": "nodemon -e ts --exec \"ts-node ./example\""
   }
 }
