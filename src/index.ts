@@ -35,3 +35,6 @@ export const schema = makeExecutableSchema({
 });
 
 export { SpotifyDataSource } from "./SpotifyDataSource";
+
+export * from "./gql-types";
+export * from "./types";

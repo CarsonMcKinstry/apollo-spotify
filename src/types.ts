@@ -1,6 +1,5 @@
 import { Resolvers } from "./gql-types";
 import { SpotifyDataSource } from "./SpotifyDataSource";
-export type Maybe<T> = T | null;
 
 export type SpotifyGraphqlContext = {
   spotifyAuthenticationToken?: string;
