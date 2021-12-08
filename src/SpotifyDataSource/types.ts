@@ -12,8 +12,8 @@ import {
   PlaylistTrack,
   AudioFeatures,
   UserProfile,
+  Maybe,
 } from "../gql-types";
-import { Maybe } from "../types";
 
 export interface ClientGrant {
   access_token: string;

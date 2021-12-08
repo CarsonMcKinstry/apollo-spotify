@@ -1,4 +1,4 @@
-import { Maybe } from "../types";
+import { Maybe } from "../gql-types";
 import {
   ClientGrant,
   isClientGrant,

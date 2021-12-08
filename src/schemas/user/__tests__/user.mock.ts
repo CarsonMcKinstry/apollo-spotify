@@ -1,9 +1,9 @@
 import nock from "nock";
-import { UserProfilePlaylistsArgs } from "../../../../_old/src/gql-types";
 import {
   MePlaylistsArgs,
   MeTopArtistsArgs,
   MeTopTracksArgs,
+  UserProfilePlaylistsArgs,
 } from "../../../gql-types";
 import { SPOTIFY_API_BASE } from "../../../SpotifyDataSource/constants";
 
