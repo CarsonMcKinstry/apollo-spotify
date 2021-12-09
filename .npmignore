@@ -1,0 +1,4 @@
+./example
+./jest.config.js
+./src
+coverage
