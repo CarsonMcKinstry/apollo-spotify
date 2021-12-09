@@ -1,7 +1,7 @@
 {
   "name": "apollo-spotify",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.0",
+  "main": "dist/index.js",
   "repository": "git@github.com:CarsonMcKinstry/spotify-graphql.git",
   "author": "Carson McKinstry <carson.mckinstry@trivago.com>",
   "license": "MIT",

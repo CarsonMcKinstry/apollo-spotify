@@ -9,3 +9,5 @@ export type SpotifyGraphqlContext = {
 };
 
 export type SpotifyResolvers = Resolvers<SpotifyGraphqlContext>;
+
+export * from "./gql-types";
